@@ -1,14 +1,14 @@
 <div
   class="cube animated animated-front"
   [style]="{
-    '--rotate-x': rotateX,
-    '--rotate-y': rotateY,
-    '--rotate-z': rotateZ,
-    '--rotate-a': rotateA
+    '--rotate-x': rotation.axisX,
+    '--rotate-y': rotation.axisY,
+    '--rotate-z': rotation.axisZ,
+    '--rotate-a': rotation.angle
   }"
   (mousedown)="onMouseDown($event)"
   (mouseleave)="onMouseLeave($event)"
-  (mousemove)="onMouseUp($event)"
+  (mousemove)="onMouseMove($event)"
   (mouseup)="onMouseUp($event)"
 >
   <div
@@ -17,7 +17,11 @@
   >
     <div
       class="cubie"
-      [style]="{ '--x': cubicle.x, '--y': cubicle.y, '--z': cubicle.z }"
+      [style]="{
+        '--x': cubicle.coords.x,
+        '--y': cubicle.coords.y,
+        '--z': cubicle.coords.z
+      }"
     >
       <div class="cubie-face cubie-face--back"></div>
       <div class="cubie-face cubie-face--down"></div>

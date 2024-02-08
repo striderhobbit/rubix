@@ -4,10 +4,73 @@ import { Quaternion, Vector3 } from 'three';
 type Face = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
 
 interface Cubicle {
-  x: number;
-  y: number;
-  z: number;
+  coords: {
+    x: number;
+    y: number;
+    z: number;
+  };
   faces: Face[];
+}
+
+interface Rotation3 {
+  axis: Vector3;
+  angle: number;
+}
+
+class Rotation {
+  #quaternion: Quaternion;
+  #decomposition: Rotation3;
+
+  get axisX(): number {
+    return this.#decomposition.axis.x;
+  }
+
+  get axisY(): number {
+    return this.#decomposition.axis.y;
+  }
+
+  get axisZ(): number {
+    return this.#decomposition.axis.z;
+  }
+
+  get angle(): number {
+    return this.#decomposition.angle;
+  }
+
+  constructor();
+  constructor(rotation?: Rotation3) {
+    this.#quaternion = new Quaternion();
+
+    if (rotation != null) {
+      this.#quaternion.setFromAxisAngle(rotation.axis, rotation.angle);
+    }
+
+    this.#decomposition = this.decomposition();
+  }
+
+  public append(rotation: Rotation3): void {
+    this.#quaternion.premultiply(
+      new Quaternion().setFromAxisAngle(
+        rotation.axis.clone().normalize(),
+        rotation.angle
+      )
+    );
+
+    this.#decomposition = this.decomposition();
+  }
+
+  private decomposition(): Rotation3 {
+    const angle = 2 * Math.acos(this.#quaternion.w);
+
+    return {
+      axis: new Vector3(
+        this.#quaternion.x,
+        this.#quaternion.y,
+        this.#quaternion.z
+      ).divideScalar(Math.sin(angle / 2)),
+      angle,
+    };
+  }
 }
 
 @Component({
@@ -16,83 +79,60 @@ interface Cubicle {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  private free?: boolean;
+
   protected cubicles: Cubicle[] = [
-    { x: 0, y: 0, z: -1, faces: ['left', 'up', 'back'] },
-    { x: 0, y: 0, z: 0, faces: ['left', 'up'] },
-    { x: 0, y: 0, z: 1, faces: ['left', 'up', 'front'] },
-    { x: 0, y: 1, z: -1, faces: ['left', 'back'] },
-    { x: 0, y: 1, z: 0, faces: ['left'] },
-    { x: 0, y: 1, z: 1, faces: ['left', 'front'] },
-    { x: 0, y: 2, z: -1, faces: ['left', 'down', 'back'] },
-    { x: 0, y: 2, z: 0, faces: ['left', 'down'] },
-    { x: 0, y: 2, z: 1, faces: ['left', 'down', 'front'] },
-    { x: 1, y: 0, z: -1, faces: ['up', 'back'] },
-    { x: 1, y: 0, z: 0, faces: ['up'] },
-    { x: 1, y: 0, z: 1, faces: ['up', 'front'] },
-    { x: 1, y: 1, z: -1, faces: ['back'] },
-    { x: 1, y: 1, z: 0, faces: [] },
-    { x: 1, y: 1, z: 1, faces: ['front'] },
-    { x: 1, y: 2, z: -1, faces: ['down', 'back'] },
-    { x: 1, y: 2, z: 0, faces: ['down'] },
-    { x: 1, y: 2, z: 1, faces: ['down', 'front'] },
-    { x: 2, y: 0, z: -1, faces: ['right', 'up', 'back'] },
-    { x: 2, y: 0, z: 0, faces: ['right', 'up'] },
-    { x: 2, y: 0, z: 1, faces: ['right', 'up', 'front'] },
-    { x: 2, y: 1, z: -1, faces: ['right', 'back'] },
-    { x: 2, y: 1, z: 0, faces: ['right'] },
-    { x: 2, y: 1, z: 1, faces: ['right', 'front'] },
-    { x: 2, y: 2, z: -1, faces: ['right', 'down', 'back'] },
-    { x: 2, y: 2, z: 0, faces: ['right', 'down'] },
-    { x: 2, y: 2, z: 1, faces: ['right', 'down', 'front'] },
+    { coords: { x: 0, y: 0, z: -1 }, faces: ['left', 'up', 'back'] },
+    { coords: { x: 0, y: 0, z: 0 }, faces: ['left', 'up'] },
+    { coords: { x: 0, y: 0, z: 1 }, faces: ['left', 'up', 'front'] },
+    { coords: { x: 0, y: 1, z: -1 }, faces: ['left', 'back'] },
+    { coords: { x: 0, y: 1, z: 0 }, faces: ['left'] },
+    { coords: { x: 0, y: 1, z: 1 }, faces: ['left', 'front'] },
+    { coords: { x: 0, y: 2, z: -1 }, faces: ['left', 'down', 'back'] },
+    { coords: { x: 0, y: 2, z: 0 }, faces: ['left', 'down'] },
+    { coords: { x: 0, y: 2, z: 1 }, faces: ['left', 'down', 'front'] },
+    { coords: { x: 1, y: 0, z: -1 }, faces: ['up', 'back'] },
+    { coords: { x: 1, y: 0, z: 0 }, faces: ['up'] },
+    { coords: { x: 1, y: 0, z: 1 }, faces: ['up', 'front'] },
+    { coords: { x: 1, y: 1, z: -1 }, faces: ['back'] },
+    { coords: { x: 1, y: 1, z: 0 }, faces: [] },
+    { coords: { x: 1, y: 1, z: 1 }, faces: ['front'] },
+    { coords: { x: 1, y: 2, z: -1 }, faces: ['down', 'back'] },
+    { coords: { x: 1, y: 2, z: 0 }, faces: ['down'] },
+    { coords: { x: 1, y: 2, z: 1 }, faces: ['down', 'front'] },
+    { coords: { x: 2, y: 0, z: -1 }, faces: ['right', 'up', 'back'] },
+    { coords: { x: 2, y: 0, z: 0 }, faces: ['right', 'up'] },
+    { coords: { x: 2, y: 0, z: 1 }, faces: ['right', 'up', 'front'] },
+    { coords: { x: 2, y: 1, z: -1 }, faces: ['right', 'back'] },
+    { coords: { x: 2, y: 1, z: 0 }, faces: ['right'] },
+    { coords: { x: 2, y: 1, z: 1 }, faces: ['right', 'front'] },
+    { coords: { x: 2, y: 2, z: -1 }, faces: ['right', 'down', 'back'] },
+    { coords: { x: 2, y: 2, z: 0 }, faces: ['right', 'down'] },
+    { coords: { x: 2, y: 2, z: 1 }, faces: ['right', 'down', 'front'] },
   ];
 
-  private movementStartX?: number;
-  private movementStartY?: number;
-  private rotationQuaternion: Quaternion = new Quaternion();
-
-  get rotateX(): number {
-    return this.rotationQuaternion.x / Math.sin(this.rotationQuaternion.w / 2);
-  }
-
-  get rotateY(): number {
-    return this.rotationQuaternion.y / Math.sin(this.rotationQuaternion.w / 2);
-  }
-
-  get rotateZ(): number {
-    return this.rotationQuaternion.z / Math.sin(this.rotationQuaternion.w / 2);
-  }
-
-  get rotateA(): number {
-    return 2 * Math.acos(this.rotationQuaternion.w);
-  }
+  protected rotation: Rotation = new Rotation();
 
   protected onMouseDown(event: MouseEvent): void {
-    this.movementStartX = event.screenX;
-    this.movementStartY = event.screenY;
+    this.free = true;
   }
 
   protected onMouseLeave(event: MouseEvent): void {
-    delete this.movementStartX;
-    delete this.movementStartY;
+    delete this.free;
+  }
+
+  protected onMouseMove(event: MouseEvent): void {
+    if (this.free) {
+      const axis = new Vector3(-event.movementY, event.movementX, 0);
+
+      this.rotation.append({
+        axis,
+        angle: axis.length() / 100,
+      });
+    }
   }
 
   protected onMouseUp(event: MouseEvent): void {
-    this.rotateTo(event.screenX, event.screenY);
-  }
-
-  private rotateTo(movementEndX: number, movementEndY: number): void {
-    if (this.movementStartX != null && this.movementStartY != null) {
-      const movementX = movementEndX - this.movementStartX;
-      const movementY = movementEndY - this.movementStartY;
-
-      const movement = new Vector3(-movementY, movementX, 0);
-
-      this.rotationQuaternion.premultiply(
-        new Quaternion().setFromAxisAngle(
-          movement.clone().normalize(),
-          movement.length() / 500
-        )
-      );
-    }
+    delete this.free;
   }
 }
