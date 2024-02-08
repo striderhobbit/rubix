@@ -12,62 +12,64 @@ interface Cubicle {
   faces: Face[];
 }
 
-interface Rotation3 {
+interface AxialRotation {
   axis: Vector3;
   angle: number;
 }
 
 class Rotation {
+  #axialRotation: AxialRotation;
   #quaternion: Quaternion;
-  #decomposition: Rotation3;
 
   get axisX(): number {
-    return this.#decomposition.axis.x;
+    return this.#axialRotation.axis.x;
   }
 
   get axisY(): number {
-    return this.#decomposition.axis.y;
+    return this.#axialRotation.axis.y;
   }
 
   get axisZ(): number {
-    return this.#decomposition.axis.z;
+    return this.#axialRotation.axis.z;
   }
 
   get angle(): number {
-    return this.#decomposition.angle;
+    return this.#axialRotation.angle;
   }
 
-  constructor();
-  constructor(rotation?: Rotation3) {
+  constructor(axialRotation?: AxialRotation) {
     this.#quaternion = new Quaternion();
 
-    if (rotation != null) {
-      this.#quaternion.setFromAxisAngle(rotation.axis, rotation.angle);
+    if (axialRotation != null) {
+      this.#quaternion.setFromAxisAngle(
+        axialRotation.axis,
+        axialRotation.angle
+      );
     }
 
-    this.#decomposition = this.decomposition();
+    this.#axialRotation = this.#toAxialRotation();
   }
 
-  public append(rotation: Rotation3): void {
+  append({ axis, angle }: AxialRotation): void {
     this.#quaternion.premultiply(
-      new Quaternion().setFromAxisAngle(
-        rotation.axis.clone().normalize(),
-        rotation.angle
-      )
+      new Quaternion().setFromAxisAngle(axis.clone().normalize(), angle)
     );
 
-    this.#decomposition = this.decomposition();
+    this.#axialRotation = this.#toAxialRotation();
   }
 
-  private decomposition(): Rotation3 {
-    const angle = 2 * Math.acos(this.#quaternion.w);
+  #toAxialRotation(): AxialRotation {
+    const axis = new Vector3(
+      this.#quaternion.x,
+      this.#quaternion.y,
+      this.#quaternion.z
+    );
+
+    const angle = 2 * Math.atan2(axis.length(), this.#quaternion.w);
 
     return {
-      axis: new Vector3(
-        this.#quaternion.x,
-        this.#quaternion.y,
-        this.#quaternion.z
-      ).divideScalar(Math.sin(angle / 2)),
+      axis:
+        angle !== 0 ? axis.divideScalar(Math.sin(angle / 2)) : new Vector3(),
       angle,
     };
   }
