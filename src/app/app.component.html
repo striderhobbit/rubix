@@ -23,12 +23,10 @@
         '--z': cubicle.coords.z
       }"
     >
-      <div class="cubie-face cubie-face--back"></div>
-      <div class="cubie-face cubie-face--down"></div>
-      <div class="cubie-face cubie-face--front"></div>
-      <div class="cubie-face cubie-face--left"></div>
-      <div class="cubie-face cubie-face--right"></div>
-      <div class="cubie-face cubie-face--up"></div>
+      <div
+        *ngFor="let _ of [].constructor(6); index as j"
+        class="cubie-face cubie-face--{{ faces[cubicle.index + j] }}"
+      ></div>
     </div>
   </div>
 </div>

@@ -4,6 +4,7 @@ import { Quaternion, Vector3 } from 'three';
 type Face = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
 
 interface Cubicle {
+  index: number;
   coords: {
     x: number;
     y: number;
@@ -85,34 +86,62 @@ class Rotation {
 export class AppComponent {
   private free?: boolean;
 
+  protected faces: Face[] = Array(27)
+    .fill(['back', 'down', 'front', 'left', 'right', 'up'])
+    .flat();
+
   protected cubicles: Cubicle[] = [
-    { coords: { x: 0, y: 0, z: -1 }, faces: ['left', 'up', 'back'] },
-    { coords: { x: 0, y: 0, z: 0 }, faces: ['left', 'up'] },
-    { coords: { x: 0, y: 0, z: 1 }, faces: ['left', 'up', 'front'] },
-    { coords: { x: 0, y: 1, z: -1 }, faces: ['left', 'back'] },
-    { coords: { x: 0, y: 1, z: 0 }, faces: ['left'] },
-    { coords: { x: 0, y: 1, z: 1 }, faces: ['left', 'front'] },
-    { coords: { x: 0, y: 2, z: -1 }, faces: ['left', 'down', 'back'] },
-    { coords: { x: 0, y: 2, z: 0 }, faces: ['left', 'down'] },
-    { coords: { x: 0, y: 2, z: 1 }, faces: ['left', 'down', 'front'] },
-    { coords: { x: 1, y: 0, z: -1 }, faces: ['up', 'back'] },
-    { coords: { x: 1, y: 0, z: 0 }, faces: ['up'] },
-    { coords: { x: 1, y: 0, z: 1 }, faces: ['up', 'front'] },
-    { coords: { x: 1, y: 1, z: -1 }, faces: ['back'] },
-    { coords: { x: 1, y: 1, z: 0 }, faces: [] },
-    { coords: { x: 1, y: 1, z: 1 }, faces: ['front'] },
-    { coords: { x: 1, y: 2, z: -1 }, faces: ['down', 'back'] },
-    { coords: { x: 1, y: 2, z: 0 }, faces: ['down'] },
-    { coords: { x: 1, y: 2, z: 1 }, faces: ['down', 'front'] },
-    { coords: { x: 2, y: 0, z: -1 }, faces: ['right', 'up', 'back'] },
-    { coords: { x: 2, y: 0, z: 0 }, faces: ['right', 'up'] },
-    { coords: { x: 2, y: 0, z: 1 }, faces: ['right', 'up', 'front'] },
-    { coords: { x: 2, y: 1, z: -1 }, faces: ['right', 'back'] },
-    { coords: { x: 2, y: 1, z: 0 }, faces: ['right'] },
-    { coords: { x: 2, y: 1, z: 1 }, faces: ['right', 'front'] },
-    { coords: { x: 2, y: 2, z: -1 }, faces: ['right', 'down', 'back'] },
-    { coords: { x: 2, y: 2, z: 0 }, faces: ['right', 'down'] },
-    { coords: { x: 2, y: 2, z: 1 }, faces: ['right', 'down', 'front'] },
+    { index: 0, coords: { x: 0, y: 0, z: -1 }, faces: ['left', 'up', 'back'] },
+    { index: 6, coords: { x: 0, y: 0, z: 0 }, faces: ['left', 'up'] },
+    { index: 12, coords: { x: 0, y: 0, z: 1 }, faces: ['left', 'up', 'front'] },
+    { index: 18, coords: { x: 0, y: 1, z: -1 }, faces: ['left', 'back'] },
+    { index: 24, coords: { x: 0, y: 1, z: 0 }, faces: ['left'] },
+    { index: 30, coords: { x: 0, y: 1, z: 1 }, faces: ['left', 'front'] },
+    {
+      index: 36,
+      coords: { x: 0, y: 2, z: -1 },
+      faces: ['left', 'down', 'back'],
+    },
+    { index: 42, coords: { x: 0, y: 2, z: 0 }, faces: ['left', 'down'] },
+    {
+      index: 48,
+      coords: { x: 0, y: 2, z: 1 },
+      faces: ['left', 'down', 'front'],
+    },
+    { index: 54, coords: { x: 1, y: 0, z: -1 }, faces: ['up', 'back'] },
+    { index: 60, coords: { x: 1, y: 0, z: 0 }, faces: ['up'] },
+    { index: 66, coords: { x: 1, y: 0, z: 1 }, faces: ['up', 'front'] },
+    { index: 72, coords: { x: 1, y: 1, z: -1 }, faces: ['back'] },
+    { index: 78, coords: { x: 1, y: 1, z: 0 }, faces: [] },
+    { index: 84, coords: { x: 1, y: 1, z: 1 }, faces: ['front'] },
+    { index: 90, coords: { x: 1, y: 2, z: -1 }, faces: ['down', 'back'] },
+    { index: 96, coords: { x: 1, y: 2, z: 0 }, faces: ['down'] },
+    { index: 102, coords: { x: 1, y: 2, z: 1 }, faces: ['down', 'front'] },
+    {
+      index: 108,
+      coords: { x: 2, y: 0, z: -1 },
+      faces: ['right', 'up', 'back'],
+    },
+    { index: 114, coords: { x: 2, y: 0, z: 0 }, faces: ['right', 'up'] },
+    {
+      index: 120,
+      coords: { x: 2, y: 0, z: 1 },
+      faces: ['right', 'up', 'front'],
+    },
+    { index: 126, coords: { x: 2, y: 1, z: -1 }, faces: ['right', 'back'] },
+    { index: 132, coords: { x: 2, y: 1, z: 0 }, faces: ['right'] },
+    { index: 138, coords: { x: 2, y: 1, z: 1 }, faces: ['right', 'front'] },
+    {
+      index: 144,
+      coords: { x: 2, y: 2, z: -1 },
+      faces: ['right', 'down', 'back'],
+    },
+    { index: 150, coords: { x: 2, y: 2, z: 0 }, faces: ['right', 'down'] },
+    {
+      index: 156,
+      coords: { x: 2, y: 2, z: 1 },
+      faces: ['right', 'down', 'front'],
+    },
   ];
 
   protected rotation: Rotation = new Rotation();
