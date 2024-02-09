@@ -50,9 +50,12 @@ class Rotation {
     this.#axialRotation = this.#toAxialRotation();
   }
 
-  append({ axis, angle }: AxialRotation): void {
+  append(axialRotation: AxialRotation): void {
     this.#quaternion.premultiply(
-      new Quaternion().setFromAxisAngle(axis.clone().normalize(), angle)
+      new Quaternion().setFromAxisAngle(
+        axialRotation.axis.clone().normalize(),
+        axialRotation.angle
+      )
     );
 
     this.#axialRotation = this.#toAxialRotation();
@@ -68,8 +71,7 @@ class Rotation {
     const angle = 2 * Math.atan2(axis.length(), this.#quaternion.w);
 
     return {
-      axis:
-        angle !== 0 ? axis.divideScalar(Math.sin(angle / 2)) : new Vector3(),
+      axis: angle != 0 ? axis.divideScalar(Math.sin(angle / 2)) : new Vector3(),
       angle,
     };
   }
