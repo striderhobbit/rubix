@@ -1,5 +1,5 @@
 <div
-  class="cube animated animated-front"
+  class="cube"
   [style]="{
     '--rotate-x': rotation.axisX,
     '--rotate-y': rotation.axisY,
@@ -14,6 +14,7 @@
   <div
     class="cubicle {{ cubicle.faces.join(' ') }}"
     *ngFor="let cubicle of cubicles"
+    (animationend)="onAnimationEnd(cubicle)"
   >
     <div
       class="cubie"

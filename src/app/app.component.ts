@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Quaternion, Vector3 } from 'three';
 
 type Face = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
@@ -84,6 +85,9 @@ class Rotation {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  @HostBinding('attr.data-move') move?: Face = 'back';
+
+  private animationEndSubject: Subject<{ target: Face }> = new Subject();
   private free?: boolean;
 
   protected faces: Face[] = Array(27)
@@ -145,6 +149,12 @@ export class AppComponent {
   ];
 
   protected rotation: Rotation = new Rotation();
+
+  protected onAnimationEnd(cubicle: Cubicle): void {
+    if (cubicle.faces.length === 1) {
+      this.animationEndSubject.next({ target: cubicle.faces[0] });
+    }
+  }
 
   protected onMouseDown(event: MouseEvent): void {
     this.free = true;

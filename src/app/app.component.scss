@@ -51,35 +51,35 @@ $cubieSize: calc(#{$cubeSize} / 3);
     transform-style: preserve-3d;
     width: 100%;
 
-    .cube.animated & {
+    :host([data-move]) & {
         animation-duration: 7s;
         animation-iteration-count: infinite;
         animation-timing-function: linear;
     }
 
-    .cube.animated-back &.back {
+    :host([data-move="back"]) &.back {
         animation-direction: reverse;
         animation-name: rotateZ;
     }
 
-    .cube.animated-down &.down {
+    :host([data-move="down"]) &.down {
         animation-name: rotateY;
     }
 
-    .cube.animated-front &.front {
+    :host([data-move="front"]) &.front {
         animation-name: rotateZ;
     }
 
-    .cube.animated-left &.left {
+    :host([data-move="left"]) &.left {
         animation-direction: reverse;
         animation-name: rotateX;
     }
 
-    .cube.animated-right &.right {
+    :host([data-move="right"]) &.right {
         animation-name: rotateX;
     }
 
-    .cube.animated-up &.up {
+    :host([data-move="up"]) &.up {
         animation-direction: reverse;
         animation-name: rotateY;
     }
