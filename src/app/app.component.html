@@ -6,15 +6,11 @@
     '--rotate-z': rotation.axisZ,
     '--rotate-a': rotation.angle
   }"
-  (mousedown)="onMouseDown($event)"
-  (mouseleave)="onMouseLeave($event)"
-  (mousemove)="onMouseMove($event)"
-  (mouseup)="onMouseUp($event)"
 >
   <div
-    class="cubicle {{ cubicle.faces.join(' ') }}"
+    class="cubicle {{ cubicle.layers.join(' ') }}"
     *ngFor="let cubicle of cubicles"
-    (animationend)="onAnimationEnd(cubicle)"
+    (animationend)="animations.next(cubicle.layers)"
   >
     <div
       class="cubie"
@@ -26,7 +22,12 @@
     >
       <div
         *ngFor="let _ of [].constructor(6); index as j"
-        class="cubie-face cubie-face--{{ faces[cubicle.index + j] }}"
+        class="cubie-face cubie-face--{{ stickers[cubicle.index + j] }}"
+        [style.--color]="
+          'var(--color-' +
+          stickers[permutation.preimage(cubicle.index + j)] +
+          ')'
+        "
       ></div>
     </div>
   </div>

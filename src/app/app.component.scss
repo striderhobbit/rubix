@@ -1,31 +1,21 @@
 $cubeSize: 210px;
 $cubieSize: calc(#{$cubeSize} / 3);
 
-@keyframes rotateX {
-    0% {
-        transform: rotateX(0deg);
-    }
-    100% {
-        transform: rotateX(360deg);
-    }
-}
-
-@keyframes rotateY {
-    0% {
-        transform: rotateY(0deg);
-    }
-    100% {
-        transform: rotateY(360deg);
+@each $axis in x, y, z {
+    @each $direction in -1, 1 {
+        @keyframes rotate-#{$axis}#{if($direction==1, "", "-reverse")} {
+            0% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate#{to-upper-case($axis) }(calc(#{$direction} * 90deg));
+            }
+        }
     }
 }
 
-@keyframes rotateZ {
-    0% {
-        transform: rotateZ(0deg);
-    }
-    100% {
-        transform: rotateZ(360deg);
-    }
+:host {
+    display: flex;
 }
 
 .cube {
@@ -36,12 +26,12 @@ $cubieSize: calc(#{$cubeSize} / 3);
     transform: rotate3d(var(--rotate-x), var(--rotate-y), var(--rotate-z), calc(var(--rotate-a) * 1rad));
     width: $cubeSize;
 
-    --color-back: #0246ad;
-    --color-down: #ffd500;
-    --color-front: #009b48;
-    --color-left: #ff5800;
-    --color-right: #b71234;
-    --color-up: white;
+    --color-B: #0246ad;
+    --color-D: #ffd500;
+    --color-F: #009b48;
+    --color-L: #ff5800;
+    --color-R: #b71234;
+    --color-U: white;
 }
 
 .cubicle {
@@ -52,36 +42,44 @@ $cubieSize: calc(#{$cubeSize} / 3);
     width: 100%;
 
     :host([data-move]) & {
-        animation-duration: 7s;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
     }
 
-    :host([data-move="back"]) &.back {
-        animation-direction: reverse;
-        animation-name: rotateZ;
+    :host([data-move="B"]) &.B {
+        animation-name: rotate-z-reverse;
     }
 
-    :host([data-move="down"]) &.down {
-        animation-name: rotateY;
+    :host([data-move="D"]) &.D {
+        animation-name: rotate-y;
     }
 
-    :host([data-move="front"]) &.front {
-        animation-name: rotateZ;
+    :host([data-move="E"]) &.E {
+        animation-name: rotate-y;
     }
 
-    :host([data-move="left"]) &.left {
-        animation-direction: reverse;
-        animation-name: rotateX;
+    :host([data-move="F"]) &.F {
+        animation-name: rotate-z;
     }
 
-    :host([data-move="right"]) &.right {
-        animation-name: rotateX;
+    :host([data-move="L"]) &.L {
+        animation-name: rotate-x-reverse;
     }
 
-    :host([data-move="up"]) &.up {
-        animation-direction: reverse;
-        animation-name: rotateY;
+    :host([data-move="M"]) &.M {
+        animation-name: rotate-x-reverse;
+    }
+
+    :host([data-move="R"]) &.R {
+        animation-name: rotate-x;
+    }
+
+    :host([data-move="S"]) &.S {
+        animation-name: rotate-z;
+    }
+
+    :host([data-move="U"]) &.U {
+        animation-name: rotate-y-reverse;
     }
 }
 
@@ -94,6 +92,7 @@ $cubieSize: calc(#{$cubeSize} / 3);
 
 .cubie-face {
     align-items: center;
+    background-color: var(--color);
     border-radius: 10px;
     display: flex;
     font-size: calc(#{$cubieSize} / 2);
@@ -102,33 +101,27 @@ $cubieSize: calc(#{$cubeSize} / 3);
     position: absolute;
     width: 100%;
 
-    &--back {
-        background-color: var(--color-back);
+    &--B {
         transform: rotateY(180deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--down {
-        background-color: var(--color-down);
+    &--D {
         transform: rotateX(270deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--front {
-        background-color: var(--color-front);
+    &--F {
         transform: translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--left {
-        background-color: var(--color-left);
+    &--L {
         transform: rotateY(270deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--right {
-        background-color: var(--color-right);
+    &--R {
         transform: rotateY(90deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--up {
-        background-color: var(--color-up);
+    &--U {
         transform: rotateX(90deg) translateZ(calc(#{$cubieSize} / 2));
     }
 }
