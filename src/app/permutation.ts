@@ -11,6 +11,12 @@ export class Permutation {
     this.#map = map.slice();
   }
 
+  apply(permutation: Permutation): Permutation {
+    this.#map = at(permutation.#map, this.#map);
+
+    return this;
+  }
+
   static fromDisjointCycles(cycles: string, n: number): Permutation {
     return new Permutation(
       Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
@@ -21,12 +27,6 @@ export class Permutation {
           return map;
         }, times(n))
     );
-  }
-
-  apply(permutation: Permutation): Permutation {
-    this.#map = at(permutation.#map, this.#map);
-
-    return this;
   }
 
   image(x: number): number {

@@ -18,24 +18,24 @@ export class Cubicle {
       .join(' ');
   }
 
+  get coordX(): number {
+    return this.#coords.x;
+  }
+
+  get coordY(): number {
+    return this.#coords.y;
+  }
+
+  get coordZ(): number {
+    return this.#coords.z;
+  }
+
   get index(): number {
     return this.#index;
   }
 
   get layers(): Layer[] {
     return this.#layers.slice();
-  }
-
-  get x(): number {
-    return this.#coords.x;
-  }
-
-  get y(): number {
-    return this.#coords.y;
-  }
-
-  get z(): number {
-    return this.#coords.z;
   }
 
   constructor({ coords, index }: { coords: Coords3; index: number }) {

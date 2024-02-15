@@ -14,7 +14,11 @@
   >
     <div
       class="cubie"
-      [style]="{ '--x': cubicle.x, '--y': cubicle.y, '--z': cubicle.z - 1 }"
+      [style]="{
+        '--x': cubicle.coordX,
+        '--y': cubicle.coordY,
+        '--z': cubicle.coordZ - 1
+      }"
     >
       <div
         *ngFor="let j of times(6)"
