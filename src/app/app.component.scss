@@ -26,12 +26,12 @@ $cubieSize: calc(#{$cubeSize} / 3);
     transform: rotate3d(var(--rotate-x), var(--rotate-y), var(--rotate-z), calc(var(--rotate-a) * 1rad));
     width: $cubeSize;
 
-    --color-B: #0246ad;
-    --color-D: #ffd500;
-    --color-F: #009b48;
-    --color-L: #ff5800;
-    --color-R: #b71234;
-    --color-U: white;
+    --color-back: #0246ad;
+    --color-down: #ffd500;
+    --color-front: #009b48;
+    --color-left: #ff5800;
+    --color-right: #b71234;
+    --color-up: white;
 }
 
 .cubicle {
@@ -46,39 +46,30 @@ $cubieSize: calc(#{$cubeSize} / 3);
         animation-timing-function: ease-in-out;
     }
 
-    :host([data-move="B"]) &.B {
+    :host([data-move="B"]) &__layer--B {
         animation-name: rotate-z-reverse;
     }
 
-    :host([data-move="D"]) &.D {
+    :host([data-move="D"]) &__layer--D,
+    :host([data-move="E"]) &__layer--E {
         animation-name: rotate-y;
     }
 
-    :host([data-move="E"]) &.E {
-        animation-name: rotate-y;
-    }
-
-    :host([data-move="F"]) &.F {
+    :host([data-move="F"]) &__layer--F,
+    :host([data-move="S"]) &__layer--S {
         animation-name: rotate-z;
     }
 
-    :host([data-move="L"]) &.L {
+    :host([data-move="L"]) &__layer--L,
+    :host([data-move="M"]) &__layer--M {
         animation-name: rotate-x-reverse;
     }
 
-    :host([data-move="M"]) &.M {
-        animation-name: rotate-x-reverse;
-    }
-
-    :host([data-move="R"]) &.R {
+    :host([data-move="R"]) &__layer--R {
         animation-name: rotate-x;
     }
 
-    :host([data-move="S"]) &.S {
-        animation-name: rotate-z;
-    }
-
-    :host([data-move="U"]) &.U {
+    :host([data-move="U"]) &__layer--U {
         animation-name: rotate-y-reverse;
     }
 }
@@ -90,7 +81,7 @@ $cubieSize: calc(#{$cubeSize} / 3);
     width: $cubieSize;
 }
 
-.cubie-face {
+.cubie__face {
     align-items: center;
     background-color: var(--color);
     border-radius: 10px;
@@ -101,27 +92,27 @@ $cubieSize: calc(#{$cubeSize} / 3);
     position: absolute;
     width: 100%;
 
-    &--B {
+    &--back {
         transform: rotateY(180deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--D {
-        transform: rotateX(270deg) translateZ(calc(#{$cubieSize} / 2));
+    &--down {
+        transform: rotateX(-90deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--F {
+    &--front {
         transform: translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--L {
-        transform: rotateY(270deg) translateZ(calc(#{$cubieSize} / 2));
+    &--left {
+        transform: rotateY(-90deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--R {
+    &--right {
         transform: rotateY(90deg) translateZ(calc(#{$cubieSize} / 2));
     }
 
-    &--U {
+    &--up {
         transform: rotateX(90deg) translateZ(calc(#{$cubieSize} / 2));
     }
 }

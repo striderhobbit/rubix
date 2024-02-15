@@ -1,19 +1,57 @@
 import { Component, HostBinding, HostListener } from '@angular/core';
-import { at, intersection, range } from 'lodash';
+import { at, clone, intersection, times } from 'lodash';
 import { Subject, concatMap, take, tap, toArray } from 'rxjs';
 import { Quaternion, Vector3 } from 'three';
 
-type Face = 'B' | 'D' | 'F' | 'L' | 'R' | 'U';
+type Face = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
 type Layer = 'B' | 'D' | 'E' | 'F' | 'L' | 'M' | 'R' | 'S' | 'U';
 
-interface Cubicle {
-  index: number;
-  coords: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  layers: Layer[];
+interface Coords3 {
+  x: number;
+  y: number;
+  z: number;
+}
+
+class Cubicle {
+  #coords: Coords3;
+  #index: number;
+  #layers: Layer[];
+
+  get classList(): string {
+    return ['cubicle']
+      .concat(this.#layers.map((layer) => `cubicle__layer--${layer}`))
+      .join(' ');
+  }
+
+  get index(): number {
+    return this.#index;
+  }
+
+  get layers(): Layer[] {
+    return this.#layers.slice();
+  }
+
+  get x(): number {
+    return this.#coords.x;
+  }
+
+  get y(): number {
+    return this.#coords.y;
+  }
+
+  get z(): number {
+    return this.#coords.z;
+  }
+
+  constructor({ coords, index }: { coords: Coords3; index: number }) {
+    this.#coords = clone(coords);
+    this.#index = index;
+    this.#layers = [
+      { 0: 'L' as const, 1: 'M' as const, 2: 'R' as const }[coords.x]!,
+      { 0: 'U' as const, 1: 'E' as const, 2: 'D' as const }[coords.y]!,
+      { 0: 'B' as const, 1: 'S' as const, 2: 'F' as const }[coords.z]!,
+    ];
+  }
 }
 
 class Permutation {
@@ -21,7 +59,7 @@ class Permutation {
 
   constructor(map: number | number[]) {
     if (typeof map === 'number') {
-      map = range(map);
+      map = times(map);
     }
 
     this.#map = map.slice();
@@ -35,7 +73,7 @@ class Permutation {
           cycle.forEach((x, i) => (map[x] = cycle[(i + 1) % cycle.length]));
 
           return map;
-        }, range(n))
+        }, times(n))
     );
   }
 
@@ -282,139 +320,13 @@ export class AppComponent {
 
   protected animations: Subject<Layer[]> = new Subject();
 
-  protected cubicles: Cubicle[] = [
-    {
-      index: 0,
-      coords: { x: 0, y: 0, z: -1 },
-      layers: ['L', 'U', 'B'],
-    },
-    {
-      index: 6,
-      coords: { x: 0, y: 0, z: 0 },
-      layers: ['L', 'U', 'S'],
-    },
-    {
-      index: 12,
-      coords: { x: 0, y: 0, z: 1 },
-      layers: ['L', 'U', 'F'],
-    },
-    {
-      index: 18,
-      coords: { x: 0, y: 1, z: -1 },
-      layers: ['L', 'B', 'E'],
-    },
-    {
-      index: 24,
-      coords: { x: 0, y: 1, z: 0 },
-      layers: ['L', 'E', 'S'],
-    },
-    {
-      index: 30,
-      coords: { x: 0, y: 1, z: 1 },
-      layers: ['L', 'F', 'E'],
-    },
-    {
-      index: 36,
-      coords: { x: 0, y: 2, z: -1 },
-      layers: ['L', 'D', 'B'],
-    },
-    {
-      index: 42,
-      coords: { x: 0, y: 2, z: 0 },
-      layers: ['L', 'D', 'S'],
-    },
-    {
-      index: 48,
-      coords: { x: 0, y: 2, z: 1 },
-      layers: ['L', 'D', 'F'],
-    },
-    {
-      index: 54,
-      coords: { x: 1, y: 0, z: -1 },
-      layers: ['U', 'B', 'M'],
-    },
-    {
-      index: 60,
-      coords: { x: 1, y: 0, z: 0 },
-      layers: ['U', 'M', 'S'],
-    },
-    {
-      index: 66,
-      coords: { x: 1, y: 0, z: 1 },
-      layers: ['U', 'F', 'M'],
-    },
-    {
-      index: 72,
-      coords: { x: 1, y: 1, z: -1 },
-      layers: ['B', 'E', 'M'],
-    },
-    { index: 78, coords: { x: 1, y: 1, z: 0 }, layers: ['E', 'M', 'S'] },
-    {
-      index: 84,
-      coords: { x: 1, y: 1, z: 1 },
-      layers: ['F', 'E', 'M'],
-    },
-    {
-      index: 90,
-      coords: { x: 1, y: 2, z: -1 },
-      layers: ['D', 'B', 'M'],
-    },
-    {
-      index: 96,
-      coords: { x: 1, y: 2, z: 0 },
-      layers: ['D', 'M', 'S'],
-    },
-    {
-      index: 102,
-      coords: { x: 1, y: 2, z: 1 },
-      layers: ['D', 'F', 'M'],
-    },
-    {
-      index: 108,
-      coords: { x: 2, y: 0, z: -1 },
-      layers: ['R', 'U', 'B'],
-    },
-    {
-      index: 114,
-      coords: { x: 2, y: 0, z: 0 },
-      layers: ['R', 'U', 'S'],
-    },
-    {
-      index: 120,
-      coords: { x: 2, y: 0, z: 1 },
-      layers: ['R', 'U', 'F'],
-    },
-    {
-      index: 126,
-      coords: { x: 2, y: 1, z: -1 },
-      layers: ['R', 'B', 'E'],
-    },
-    {
-      index: 132,
-      coords: { x: 2, y: 1, z: 0 },
-      layers: ['R', 'E', 'S'],
-    },
-    {
-      index: 138,
-      coords: { x: 2, y: 1, z: 1 },
-      layers: ['R', 'F', 'E'],
-    },
-    {
-      index: 144,
-      coords: { x: 2, y: 2, z: -1 },
-      layers: ['R', 'D', 'B'],
-    },
-    {
-      index: 150,
-      coords: { x: 2, y: 2, z: 0 },
-      layers: ['R', 'D', 'S'],
-    },
-    {
-      index: 156,
-      coords: { x: 2, y: 2, z: 1 },
-      layers: ['R', 'D', 'F'],
-    },
-  ];
+  protected cubicles: Cubicle[] = times(3)
+    .flatMap((x) => times(3).flatMap((y) => times(3).map((z) => ({ x, y, z }))))
+    .map((coords, i) => new Cubicle({ coords, index: 6 * i }));
+
+  protected faces: Face[] = Array(27)
+    .fill(['back', 'down', 'front', 'left', 'right', 'up'])
+    .flat();
 
   protected permutation: Permutation = new Permutation(27 * 6);
 
@@ -428,9 +340,7 @@ export class AppComponent {
       angle: -Math.PI / 4,
     });
 
-  protected stickers: Face[] = Array(27)
-    .fill(['B', 'D', 'F', 'L', 'R', 'U'])
-    .flat();
+  protected times = times;
 
   constructor() {
     this.moves
@@ -450,5 +360,12 @@ export class AppComponent {
         })
       )
       .subscribe();
+
+    this.moves.next('M');
+    this.moves.next('E');
+    this.moves.next('S');
+    this.moves.next('R');
+    this.moves.next('U');
+    this.moves.next('F');
   }
 }

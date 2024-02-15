@@ -8,25 +8,19 @@
   }"
 >
   <div
-    class="cubicle {{ cubicle.layers.join(' ') }}"
     *ngFor="let cubicle of cubicles"
+    [class]="cubicle.classList"
     (animationend)="animations.next(cubicle.layers)"
   >
     <div
       class="cubie"
-      [style]="{
-        '--x': cubicle.coords.x,
-        '--y': cubicle.coords.y,
-        '--z': cubicle.coords.z
-      }"
+      [style]="{ '--x': cubicle.x, '--y': cubicle.y, '--z': cubicle.z - 1 }"
     >
       <div
-        *ngFor="let _ of [].constructor(6); index as j"
-        class="cubie-face cubie-face--{{ stickers[cubicle.index + j] }}"
+        *ngFor="let j of times(6)"
+        class="cubie__face cubie__face--{{ faces[cubicle.index + j] }}"
         [style.--color]="
-          'var(--color-' +
-          stickers[permutation.preimage(cubicle.index + j)] +
-          ')'
+          'var(--color-' + faces[permutation.preimage(cubicle.index + j)] + ')'
         "
       ></div>
     </div>
