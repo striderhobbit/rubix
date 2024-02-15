@@ -19,7 +19,6 @@ $cubieSize: calc($cubeSize / 3);
 }
 
 .cube {
-    border: 1px solid black;
     height: $cubeSize;
     margin: $cubeSize;
     transform-style: preserve-3d;
