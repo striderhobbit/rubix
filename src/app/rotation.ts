@@ -51,18 +51,23 @@ export class Rotation {
     return this;
   }
 
+  /**
+   *
+   * @see https://www.wikiwand.com/en/Axis%E2%80%93angle_representation#Unit_quaternions
+   */
   #toAxialRotation(): AxialRotation {
-    const axis = new Vector3(
+    const s = this.#quaternion.w;
+    const x = new Vector3(
       this.#quaternion.x,
       this.#quaternion.y,
       this.#quaternion.z
     );
 
-    const angle = 2 * Math.atan2(axis.length(), this.#quaternion.w);
+    const theta = 2 * Math.atan2(x.length(), s);
 
     return {
-      axis: angle != 0 ? axis.divideScalar(Math.sin(angle / 2)) : new Vector3(),
-      angle,
+      axis: theta !== 0 ? x.divideScalar(Math.sin(theta / 2)) : new Vector3(),
+      angle: theta,
     };
   }
 }
