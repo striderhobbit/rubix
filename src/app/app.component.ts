@@ -61,7 +61,7 @@ export class AppComponent {
       S: '(6 114 150 42)(7 117 155 46)(8 116 152 44)(9 119 154 43)(10 115 153 47)(11 118 151 45)(24 60 132 96)(25 63 137 100)(26 62 134 98)(27 65 136 97)(28 61 135 101)(29 64 133 99)',
       U: '(0 112 122 15)(1 109 121 13)(2 111 120 16)(3 108 124 14)(4 110 123 12)(5 113 125 17)(6 58 116 69)(7 55 115 67)(8 57 114 70)(9 54 118 68)(10 56 117 66)(11 59 119 71)',
     },
-    (cycles) => Permutation.fromDisjointCycles(cycles, 27 * 6)
+    (cycles) => new Permutation(27 * 6).setFromCycles(cycles)
   );
 
   protected animations: Subject<Layer[]> = new Subject();

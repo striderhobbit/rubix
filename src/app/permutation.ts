@@ -1,18 +1,20 @@
-import { at, pull, times } from 'lodash';
+import { at, isEqual, pull, sortBy, times } from 'lodash';
 
 export class Permutation {
   #map: number[];
 
-  get n(): number {
-    return this.#map.length;
+  constructor(public n: number) {
+    this.#map = times(n);
   }
 
-  constructor(map: number | number[]) {
-    if (typeof map === 'number') {
-      map = times(map);
+  setFromArray(map: number[]): Permutation {
+    if (!isEqual(sortBy(map), times(this.n))) {
+      throw new Error();
     }
 
     this.#map = map.slice();
+
+    return this;
   }
 
   apply(permutation: Permutation): Permutation {
@@ -21,26 +23,36 @@ export class Permutation {
     return this;
   }
 
-  static fromDisjointCycles(cycles: string, n: number): Permutation {
-    return new Permutation(
-      Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
-        .map(([_, cycle]) => cycle.split(/\s+/).map(Number))
-        .reduce((map, cycle) => {
-          cycle.forEach((x, i) => (map[x] = cycle[(i + 1) % cycle.length]));
-
-          return map;
-        }, times(n))
-    );
+  setFromCycles(cycles: string): Permutation {
+    return Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
+      .map(([_, cycle]) => cycle.split(/\s+/).map(Number))
+      .reduce((permutation, cycle) => {
+        return permutation.apply(
+          this.identity().setFromArray(
+            cycle.reduce(
+              (map, x, i) =>
+                Object.assign(map, {
+                  [x]: cycle[(i + 1) % cycle.length],
+                }),
+              times(this.n)
+            )
+          )
+        );
+      }, this.identity());
   }
 
   image(x: number): number {
     return this.#map[x];
   }
 
+  identity(): Permutation {
+    return new Permutation(this.n);
+  }
+
   inverse(): Permutation {
-    return new Permutation(
+    return this.setFromArray(
       this.#map.reduce(
-        (inverse, y, x) => Object.assign(inverse, { [y]: x }),
+        (map, y, x) => Object.assign(map, { [y]: x }),
         Array(this.n)
       )
     );
