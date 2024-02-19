@@ -55,11 +55,11 @@ export class Permutation {
     const cycles: number[][] = [];
 
     while (domain.length) {
-      let y: number;
-      const cycle: number[] = [(y = domain[0])];
+      let x: number;
+      const cycle = [(x = domain[0])];
 
-      while (cycle[0] !== (y = this.image(y))) {
-        cycle.push(y);
+      while (cycle[0] !== (x = this.image(x))) {
+        cycle.push(x);
       }
 
       pull(domain, ...cycle);
