@@ -76,7 +76,7 @@ $cubieSize: calc($cubeSize / 3);
 .cubie {
     height: $cubieSize;
     transform-style: preserve-3d;
-    transform: translate3d(calc(var(--x) * $cubieSize), calc(var(--y) * $cubieSize), calc(var(--z) * $cubieSize));
+    transform: translate3d(calc(var(--x) * $cubieSize), calc(var(--y) * $cubieSize), calc((var(--z) - 1) * $cubieSize));
     width: $cubieSize;
 }
 
