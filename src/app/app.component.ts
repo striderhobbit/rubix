@@ -101,8 +101,6 @@ export class AppComponent {
       )
       .subscribe();
 
-    console.log(this.rotation);
-
     this.moves.next('M');
     this.moves.next('E');
     this.moves.next('S');
