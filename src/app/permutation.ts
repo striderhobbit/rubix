@@ -7,18 +7,41 @@ export class Permutation {
     this.#map = times(n);
   }
 
-  setFromArray(map: number[]): Permutation {
-    if (!isEqual(sortBy(map), times(this.n))) {
-      throw new Error();
-    }
-
-    this.#map = map.slice();
+  apply(permutation: Permutation): Permutation {
+    this.#map = at(permutation.#map, this.#map);
 
     return this;
   }
 
-  apply(permutation: Permutation): Permutation {
-    this.#map = at(permutation.#map, this.#map);
+  identity(): Permutation {
+    return new Permutation(this.n);
+  }
+
+  image(x: number): number {
+    return this.#map[x];
+  }
+
+  inverse(): Permutation {
+    return this.setFromArray(
+      this.#map.reduce(
+        (map, y, x) => Object.assign(map, { [y]: x }),
+        Array(this.n)
+      )
+    );
+  }
+
+  preimage(y: number): number {
+    return this.#map.indexOf(y);
+  }
+
+  setFromArray(map: number[]): Permutation {
+    if (!isEqual(sortBy(map), times(this.n))) {
+      throw new Error(
+        `map ${JSON.stringify(map)} is not an element of S(${this.n})`
+      );
+    }
+
+    this.#map = map.slice();
 
     return this;
   }
@@ -39,27 +62,6 @@ export class Permutation {
           )
         );
       }, this.identity());
-  }
-
-  image(x: number): number {
-    return this.#map[x];
-  }
-
-  identity(): Permutation {
-    return new Permutation(this.n);
-  }
-
-  inverse(): Permutation {
-    return this.setFromArray(
-      this.#map.reduce(
-        (map, y, x) => Object.assign(map, { [y]: x }),
-        Array(this.n)
-      )
-    );
-  }
-
-  preimage(y: number): number {
-    return this.#map.indexOf(y);
   }
 
   toDisjointCycles(): string {
