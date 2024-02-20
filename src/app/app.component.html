@@ -24,7 +24,7 @@
         *ngFor="let j of times(6)"
         class="cubie__face cubie__face--{{ faces[cubicle.index + j] }}"
         [style.--color]="
-          'var(--color-' + faces[permutation.preimage(cubicle.index + j)] + ')'
+          'var(--color-' + faces[permutation.pull(cubicle.index + j)] + ')'
         "
       ></div>
     </div>

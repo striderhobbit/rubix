@@ -17,10 +17,6 @@ export class Permutation {
     return new Permutation(this.n);
   }
 
-  image(x: number): number {
-    return this.#map[x];
-  }
-
   inverse(): Permutation {
     return this.setFromArray(
       this.#map.reduce(
@@ -30,7 +26,11 @@ export class Permutation {
     );
   }
 
-  preimage(y: number): number {
+  map(x: number): number {
+    return this.#map[x];
+  }
+
+  pull(y: number): number {
     return this.#map.indexOf(y);
   }
 
@@ -72,7 +72,7 @@ export class Permutation {
       let x: number;
       const cycle = [(x = domain[0])];
 
-      while (cycle[0] !== (x = this.image(x))) {
+      while (cycle[0] !== (x = this.map(x))) {
         cycle.push(x);
       }
 
