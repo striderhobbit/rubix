@@ -1,28 +1,28 @@
 import { Quaternion, Vector3 } from 'three';
 
-interface AxialRotation {
+interface AxisAngle {
   axis: Vector3;
   angle: number;
 }
 
 export class Rotation {
-  #axialRotation!: AxialRotation;
+  #axisAngle!: AxisAngle;
   #quaternion: Quaternion;
 
   get axisX(): number {
-    return this.#axialRotation.axis.x;
+    return this.#axisAngle.axis.x;
   }
 
   get axisY(): number {
-    return this.#axialRotation.axis.y;
+    return this.#axisAngle.axis.y;
   }
 
   get axisZ(): number {
-    return this.#axialRotation.axis.z;
+    return this.#axisAngle.axis.z;
   }
 
   get angle(): number {
-    return this.#axialRotation.angle;
+    return this.#axisAngle.angle;
   }
 
   constructor() {
@@ -31,19 +31,27 @@ export class Rotation {
     this.#sync();
   }
 
-  apply(axialRotation: AxialRotation): Rotation {
-    this.#quaternion.premultiply(
-      new Quaternion().setFromAxisAngle(
-        axialRotation.axis.clone().normalize(),
-        axialRotation.angle
-      )
+  apply(rotation: Rotation): Rotation {
+    return this.applyQuaternion(rotation.#quaternion);
+  }
+
+  applyAxisAngle(axisAngle: AxisAngle): Rotation {
+    return this.apply(
+      new Rotation().setFromAxisAngle({
+        axis: axisAngle.axis.clone().normalize(),
+        angle: axisAngle.angle,
+      })
     );
+  }
+
+  applyQuaternion(quaternion: Quaternion): Rotation {
+    this.#quaternion.premultiply(quaternion);
 
     return this.#sync();
   }
 
-  setFromAxialRotation(axialRotation: AxialRotation): Rotation {
-    this.#quaternion.setFromAxisAngle(axialRotation.axis, axialRotation.angle);
+  setFromAxisAngle(axisAngle: AxisAngle): Rotation {
+    this.#quaternion.setFromAxisAngle(axisAngle.axis, axisAngle.angle);
 
     return this.#sync();
   }
@@ -55,7 +63,7 @@ export class Rotation {
   }
 
   #sync(): Rotation {
-    this.#axialRotation = this.#toAxialRotation();
+    this.#axisAngle = this.#toAxisAngle();
 
     return this;
   }
@@ -64,7 +72,7 @@ export class Rotation {
    *
    * @see https://www.wikiwand.com/en/Axis%E2%80%93angle_representation#Unit_quaternions
    */
-  #toAxialRotation(): AxialRotation {
+  #toAxisAngle(): AxisAngle {
     const s = this.#quaternion.w;
     const x = new Vector3(
       this.#quaternion.x,

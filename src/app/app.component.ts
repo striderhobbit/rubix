@@ -33,7 +33,7 @@ export class AppComponent {
     if (this.free) {
       const axis = new Vector3(-event.movementY, event.movementX, 0);
 
-      this.rotation.apply({
+      this.rotation.applyAxisAngle({
         axis,
         angle: axis.length() / 80,
       });
@@ -77,11 +77,11 @@ export class AppComponent {
   protected permutation: Permutation = new Permutation(27 * 6);
 
   protected rotation: Rotation = new Rotation()
-    .apply({
+    .applyAxisAngle({
       axis: new Vector3(0, 1, 0),
       angle: -Math.PI / 4,
     })
-    .apply({
+    .applyAxisAngle({
       axis: new Vector3(1, 0, 0),
       angle: -Math.PI / 4,
     });
