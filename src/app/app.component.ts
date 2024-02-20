@@ -1,7 +1,7 @@
 import { Component, HostBinding, HostListener } from '@angular/core';
 import { intersection, mapValues, times } from 'lodash';
 import { Subject, concatMap, take, tap, toArray } from 'rxjs';
-import { Vector3 } from 'three';
+import { Quaternion, Vector3 } from 'three';
 import { Cubicle } from './cubicle';
 import { Permutation } from './permutation';
 import { Rotation } from './rotation';
@@ -76,15 +76,14 @@ export class AppComponent {
 
   protected permutation: Permutation = new Permutation(27 * 6);
 
-  protected rotation: Rotation = new Rotation()
-    .applyAxisAngle({
-      axis: new Vector3(0, 1, 0),
-      angle: -Math.PI / 4,
-    })
-    .applyAxisAngle({
-      axis: new Vector3(1, 0, 0),
-      angle: -Math.PI / 4,
-    });
+  protected rotation: Rotation = ((a: number): Rotation => {
+    const x = -Math.sin(a) / 2,
+      y = x,
+      z = Math.sin(a / 2) ** 2,
+      w = Math.cos(a / 2) ** 2;
+
+    return new Rotation().setFromQuaternion(new Quaternion(x, y, z, w));
+  })(Math.PI / 6);
 
   protected times = times;
 
