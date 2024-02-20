@@ -6,7 +6,7 @@ interface AxialRotation {
 }
 
 export class Rotation {
-  #axialRotation: AxialRotation;
+  #axialRotation!: AxialRotation;
   #quaternion: Quaternion;
 
   get axisX(): number {
@@ -25,17 +25,10 @@ export class Rotation {
     return this.#axialRotation.angle;
   }
 
-  constructor(axialRotation?: AxialRotation) {
+  constructor() {
     this.#quaternion = new Quaternion();
 
-    if (axialRotation != null) {
-      this.#quaternion.setFromAxisAngle(
-        axialRotation.axis,
-        axialRotation.angle
-      );
-    }
-
-    this.#axialRotation = this.#toAxialRotation();
+    this.#sync();
   }
 
   apply(axialRotation: AxialRotation): Rotation {
@@ -46,6 +39,22 @@ export class Rotation {
       )
     );
 
+    return this.#sync();
+  }
+
+  setFromAxialRotation(axialRotation: AxialRotation): Rotation {
+    this.#quaternion.setFromAxisAngle(axialRotation.axis, axialRotation.angle);
+
+    return this.#sync();
+  }
+
+  setFromQuaternion(quaternion: Quaternion): Rotation {
+    this.#quaternion = quaternion.clone();
+
+    return this.#sync();
+  }
+
+  #sync(): Rotation {
     this.#axialRotation = this.#toAxialRotation();
 
     return this;
