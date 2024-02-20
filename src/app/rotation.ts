@@ -50,6 +50,27 @@ export class Rotation {
     return this.#sync();
   }
 
+  rotateX(angle: number): Rotation {
+    return this.applyAxisAngle({
+      axis: new Vector3(1, 0, 0),
+      angle,
+    });
+  }
+
+  rotateY(angle: number): Rotation {
+    return this.applyAxisAngle({
+      axis: new Vector3(0, 1, 0),
+      angle,
+    });
+  }
+
+  rotateZ(angle: number): Rotation {
+    return this.applyAxisAngle({
+      axis: new Vector3(0, 0, 1),
+      angle,
+    });
+  }
+
   setFromAxisAngle(axisAngle: AxisAngle): Rotation {
     this.#quaternion.setFromAxisAngle(axisAngle.axis, axisAngle.angle);
 
