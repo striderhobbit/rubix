@@ -15,7 +15,10 @@ $cubieSize: calc($cubeSize / 3);
 }
 
 :host {
+    align-items: center;
     display: flex;
+    height: 100%;
+    justify-content: center;
 }
 
 .cube {
