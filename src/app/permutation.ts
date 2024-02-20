@@ -1,18 +1,10 @@
-import { at, pull, times } from 'lodash';
+import { at, isEqual, pull, sortBy, times } from 'lodash';
 
 export class Permutation {
   #map: number[];
 
-  get n(): number {
-    return this.#map.length;
-  }
-
-  constructor(map: number | number[]) {
-    if (typeof map === 'number') {
-      map = times(map);
-    }
-
-    this.#map = map.slice();
+  constructor(public n: number) {
+    this.#map = times(n);
   }
 
   apply(permutation: Permutation): Permutation {
@@ -21,16 +13,8 @@ export class Permutation {
     return this;
   }
 
-  static fromDisjointCycles(cycles: string, n: number): Permutation {
-    return new Permutation(
-      Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
-        .map(([_, cycle]) => cycle.split(/\s+/).map(Number))
-        .reduce((map, cycle) => {
-          cycle.forEach((x, i) => (map[x] = cycle[(i + 1) % cycle.length]));
-
-          return map;
-        }, times(n))
-    );
+  identity(): Permutation {
+    return new Permutation(this.n);
   }
 
   image(x: number): number {
@@ -38,9 +22,9 @@ export class Permutation {
   }
 
   inverse(): Permutation {
-    return new Permutation(
+    return this.setFromArray(
       this.#map.reduce(
-        (inverse, y, x) => Object.assign(inverse, { [y]: x }),
+        (map, y, x) => Object.assign(map, { [y]: x }),
         Array(this.n)
       )
     );
@@ -48,6 +32,36 @@ export class Permutation {
 
   preimage(y: number): number {
     return this.#map.indexOf(y);
+  }
+
+  setFromArray(map: number[]): Permutation {
+    if (!isEqual(sortBy(map), times(this.n))) {
+      throw new Error(
+        `map ${JSON.stringify(map)} is not an element of S(${this.n})`
+      );
+    }
+
+    this.#map = map.slice();
+
+    return this;
+  }
+
+  setFromCycles(cycles: string): Permutation {
+    return Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
+      .map(([_, cycle]) => cycle.split(/\s+/).map(Number))
+      .reduce((permutation, cycle) => {
+        return permutation.apply(
+          this.identity().setFromArray(
+            cycle.reduce(
+              (map, x, i) =>
+                Object.assign(map, {
+                  [x]: cycle[(i + 1) % cycle.length],
+                }),
+              times(this.n)
+            )
+          )
+        );
+      }, this.identity());
   }
 
   toDisjointCycles(): string {
