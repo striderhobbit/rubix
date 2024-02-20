@@ -7,6 +7,24 @@ interface Coords3 {
   z: number;
 }
 
+enum LayerX {
+  L,
+  M,
+  R,
+}
+
+enum LayerY {
+  U,
+  E,
+  D,
+}
+
+enum LayerZ {
+  B,
+  S,
+  F,
+}
+
 export class Cubicle {
   #coords: Coords3;
   #index: number;
@@ -42,9 +60,9 @@ export class Cubicle {
     this.#coords = clone(coords);
     this.#index = index;
     this.#layers = [
-      { 0: 'L' as const, 1: 'M' as const, 2: 'R' as const }[coords.x]!,
-      { 0: 'U' as const, 1: 'E' as const, 2: 'D' as const }[coords.y]!,
-      { 0: 'B' as const, 1: 'S' as const, 2: 'F' as const }[coords.z]!,
+      LayerX[coords.x] as Layer,
+      LayerY[coords.y] as Layer,
+      LayerZ[coords.z] as Layer,
     ];
   }
 }
