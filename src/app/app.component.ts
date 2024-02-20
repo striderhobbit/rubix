@@ -83,7 +83,7 @@ export class AppComponent {
       w = Math.cos(a / 2) ** 2;
 
     return new Rotation().setFromQuaternion(new Quaternion(x, y, z, w));
-  })(Math.PI / 6);
+  })(Math.PI / 4);
 
   protected times = times;
 
@@ -105,6 +105,8 @@ export class AppComponent {
         })
       )
       .subscribe();
+
+    console.log(this.rotation);
 
     this.moves.next('M');
     this.moves.next('E');
