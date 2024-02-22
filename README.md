@@ -1,3 +1,6 @@
+![Animation](https://github.com/striderhobbit/rubix/assets/141032232/c2a27b6d-b9d8-456f-a3c3-0d8764144565)
+
+
 # Rubix
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.7.
