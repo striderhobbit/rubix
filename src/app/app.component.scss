@@ -1,4 +1,4 @@
-$cubeSize: 210px;
+$cubeSize: 50vmin;
 $cubieSize: calc($cubeSize / 3);
 
 @each $axis in x, y, z {
@@ -84,15 +84,9 @@ $cubieSize: calc($cubeSize / 3);
 }
 
 .cubie__face {
-    align-items: center;
     background-color: black;
-    border-radius: 10px;
-    display: flex;
-    font-size: calc($cubieSize / 2);
-    height: 100%;
-    justify-content: center;
+    border-radius: calc($cubieSize / 10);
     position: absolute;
-    width: 100%;
 
     &--back {
         transform: rotateY(180deg) translateZ(calc($cubieSize / 2));

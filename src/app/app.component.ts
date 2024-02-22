@@ -1,6 +1,16 @@
 import { Component, HostBinding, HostListener } from '@angular/core';
 import { intersection, mapValues, times } from 'lodash';
-import { Subject, concatMap, take, tap, toArray } from 'rxjs';
+import {
+  Subject,
+  animationFrameScheduler,
+  concat,
+  concatMap,
+  defer,
+  scheduled,
+  take,
+  tap,
+  toArray,
+} from 'rxjs';
 import { Vector3 } from 'three';
 import { Cubicle } from './cubicle';
 import { Permutation } from './permutation';
@@ -86,26 +96,30 @@ export class AppComponent {
     this.moves
       .pipe(
         concatMap((move) => {
-          this.move = move;
+          delete this.move;
 
-          return this.animations.pipe(
-            take(9),
-            toArray(),
-            tap((layers) =>
-              this.permutation.apply(
-                this.permutations[intersection(...layers)[0]]
+          return scheduled(
+            concat(
+              defer(() => (this.move = move)),
+              this.animations.pipe(
+                take(9),
+                toArray(),
+                tap((layers) =>
+                  this.permutation.apply(
+                    this.permutations[intersection(...layers)[0]]
+                  )
+                )
               )
-            )
+            ),
+            animationFrameScheduler
           );
         })
       )
       .subscribe();
 
-    this.moves.next('M');
-    this.moves.next('E');
-    this.moves.next('S');
-    this.moves.next('R');
     this.moves.next('U');
-    this.moves.next('F');
+    this.moves.next('M');
+    this.moves.next('M');
+    this.moves.next('D');
   }
 }
