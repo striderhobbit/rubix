@@ -20,13 +20,24 @@
         '--z': cubicle.coordZ
       }"
     >
-      <div
+      <svg
         *ngFor="let j of times(6)"
         class="cubie__face cubie__face--{{ faces[cubicle.index + j] }}"
-        [style.--color]="
-          'var(--color-' + faces[permutation.pull(cubicle.index + j)] + ')'
-        "
-      ></div>
+        viewBox="0 0 1 1"
+      >
+        <rect
+          *ngIf="0.1 as margin"
+          [attr.fill]="
+            'var(--color-' + faces[permutation.pull(cubicle.index + j)] + ')'
+          "
+          [attr.height]="1 - 2 * margin"
+          [attr.rx]="0.1"
+          [attr.ry]="0.1"
+          [attr.width]="1 - 2 * margin"
+          [attr.x]="margin"
+          [attr.y]="margin"
+        ></rect>
+      </svg>
     </div>
   </div>
 </div>

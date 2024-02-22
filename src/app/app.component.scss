@@ -85,7 +85,7 @@ $cubieSize: calc($cubeSize / 3);
 
 .cubie__face {
     align-items: center;
-    background-color: var(--color);
+    background-color: black;
     border-radius: 10px;
     display: flex;
     font-size: calc($cubieSize / 2);
