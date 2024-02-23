@@ -20,13 +20,28 @@ type Face = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
 
 export type Layer = 'B' | 'D' | 'E' | 'F' | 'L' | 'M' | 'R' | 'S' | 'U';
 
+type MoveDirection = 'normal' | 'reverse';
+
+interface Move {
+  layer: Layer;
+  direction?: MoveDirection;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  @HostBinding('attr.data-move') move?: Layer;
+  @HostBinding('attr.data-move-layer')
+  get moveLayer(): Layer | undefined {
+    return this.move?.layer;
+  }
+
+  @HostBinding('attr.data-move-direction')
+  get moveDirection(): MoveDirection | undefined {
+    return this.move?.direction;
+  }
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent): void {
@@ -55,11 +70,7 @@ export class AppComponent {
     delete this.free;
   }
 
-  private free?: boolean;
-
-  private moves: Subject<Layer> = new Subject();
-
-  private permutations: Record<Layer, Permutation> = mapValues(
+  private baseMoves: Record<Layer, Permutation> = mapValues(
     {
       B: '(0 36 144 108)(1 40 149 111)(2 38 146 110)(3 37 148 113)(4 41 147 109)(5 39 145 112)(18 90 126 54)(19 94 131 57)(20 92 128 56)(21 91 130 59)(22 95 129 55)(23 93 127 58)',
       D: '(36 51 158 148)(37 49 157 145)(38 52 156 147)(39 50 160 144)(40 48 159 146)(41 53 161 149)(42 105 152 94)(43 103 151 91)(44 106 150 93)(45 104 154 90)(46 102 153 92)(47 107 155 95)',
@@ -73,6 +84,12 @@ export class AppComponent {
     },
     (cycles) => new Permutation(27 * 6).setFromCycles(cycles)
   );
+
+  private free?: boolean;
+
+  private move?: Move;
+
+  private moves: Subject<Move> = new Subject();
 
   protected animations: Subject<Layer[]> = new Subject();
 
@@ -100,15 +117,23 @@ export class AppComponent {
 
           return scheduled(
             concat(
-              defer(() => (this.move = move)),
+              defer(async () => (this.move = move)),
               this.animations.pipe(
                 take(9),
                 toArray(),
-                tap((layers) =>
+                tap((layers) => {
+                  const [layer] = intersection(...layers);
+
+                  if (layer !== this.move?.layer) {
+                    throw new Error();
+                  }
+
                   this.permutation.apply(
-                    this.permutations[intersection(...layers)[0]]
-                  )
-                )
+                    this.move.direction === 'reverse'
+                      ? this.baseMoves[layer].inverse()
+                      : this.baseMoves[layer]
+                  );
+                })
               )
             ),
             animationFrameScheduler
@@ -117,9 +142,6 @@ export class AppComponent {
       )
       .subscribe();
 
-    this.moves.next('U');
-    this.moves.next('M');
-    this.moves.next('M');
-    this.moves.next('D');
+    this.moves.next({ layer: 'U', direction: 'reverse' });
   }
 }
