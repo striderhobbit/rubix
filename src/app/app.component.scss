@@ -7,7 +7,8 @@ $cubieSize: calc($cubeSize / 3);
             transform: rotate(0);
         }
         100% {
-            transform: rotate#{$axis }(calc(var(--animation-direction, 1) * var(--move-direction, 1) * 90deg));
+            transform: rotate#{$axis
+                }(calc(var(--animation-direction-factor-1, 1) * var(--animation-direction-factor-2, 1) * 90deg));
         }
     }
 }
@@ -19,7 +20,7 @@ $cubieSize: calc($cubeSize / 3);
     justify-content: center;
 
     &[data-move-direction="reverse"] {
-        --move-direction: -1;
+        --animation-direction-factor-1: -1;
     }
 }
 
@@ -72,7 +73,7 @@ $cubieSize: calc($cubeSize / 3);
     :host([data-move-layer="L"]) &__layer--L,
     :host([data-move-layer="M"]) &__layer--M,
     :host([data-move-layer="U"]) &__layer--U {
-        --animation-direction: -1;
+        --animation-direction-factor-2: -1;
     }
 }
 
