@@ -18,7 +18,7 @@ export class Permutation {
   }
 
   inverse(): Permutation {
-    return this.setFromArray(
+    return this.identity().setFromArray(
       this.#map.reduce(
         (map, y, x) => Object.assign(map, { [y]: x }),
         Array(this.n)

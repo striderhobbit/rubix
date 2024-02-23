@@ -124,7 +124,7 @@ export class AppComponent {
                 tap((layers) => {
                   const [layer] = intersection(...layers);
 
-                  if (layer !== this.move?.layer) {
+                  if (this.move == null || this.move.layer !== layer) {
                     throw new Error();
                   }
 
@@ -143,5 +143,16 @@ export class AppComponent {
       .subscribe();
 
     this.moves.next({ layer: 'U', direction: 'reverse' });
+    this.moves.next({ layer: 'U' });
+    this.moves.next({ layer: 'D', direction: 'reverse' });
+    this.moves.next({ layer: 'D' });
+    this.moves.next({ layer: 'R', direction: 'reverse' });
+    this.moves.next({ layer: 'R' });
+    this.moves.next({ layer: 'L', direction: 'reverse' });
+    this.moves.next({ layer: 'L' });
+    this.moves.next({ layer: 'F', direction: 'reverse' });
+    this.moves.next({ layer: 'F' });
+    this.moves.next({ layer: 'B', direction: 'reverse' });
+    this.moves.next({ layer: 'B' });
   }
 }
