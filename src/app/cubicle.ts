@@ -1,5 +1,6 @@
-import { clone } from 'lodash';
+import { at, clone, compact, intersection } from 'lodash';
 import { Layer } from './app.component';
+import { Move } from './move';
 
 interface Coords3 {
   x: number;
@@ -64,5 +65,9 @@ export class Cubicle {
       LayerY[coords.y] as Layer,
       LayerZ[coords.z] as Layer,
     ];
+  }
+
+  direction(move?: Move): number | undefined {
+    return compact(at(move?.layers, this.#layers))[0];
   }
 }

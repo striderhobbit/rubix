@@ -1,4 +1,4 @@
-import { mapValues, uniqueId } from 'lodash';
+import { clone, mapValues, uniqueId } from 'lodash';
 import { Layer } from './app.component';
 import { Permutation } from './permutation';
 
@@ -20,8 +20,7 @@ const baseMoves: Record<Layer, Permutation> = mapValues(
 export class Move {
   readonly id: string = uniqueId();
 
-  direction: number;
-  layer: Layer;
+  layers: Partial<Record<Layer, number>>;
   length: number;
   permutation: Permutation;
 
@@ -29,116 +28,98 @@ export class Move {
     const move = {
       B: {
         direction: -1,
-        layer: 'B' as const,
+        layers: { B: -1 },
         length: 9,
         permutation: baseMoves.B,
       },
       "B'": {
-        direction: 1,
-        layer: 'B' as const,
+        layers: { B: 1 },
         length: 9,
         permutation: baseMoves.B.inverse(),
       },
       D: {
-        direction: 1,
-        layer: 'D' as const,
+        layers: { D: 1 },
         length: 9,
         permutation: baseMoves.D,
       },
       "D'": {
-        direction: -1,
-        layer: 'D' as const,
+        layers: { D: -1 },
         length: 9,
         permutation: baseMoves.D.inverse(),
       },
       E: {
-        direction: 1,
-        layer: 'E' as const,
+        layers: { E: 1 },
         length: 9,
         permutation: baseMoves.E,
       },
       "E'": {
-        direction: -1,
-        layer: 'E' as const,
+        layers: { E: -1 },
         length: 9,
         permutation: baseMoves.E.inverse(),
       },
       F: {
-        direction: 1,
-        layer: 'F' as const,
+        layers: { F: 1 },
         length: 9,
         permutation: baseMoves.F,
       },
       "F'": {
-        direction: -1,
-        layer: 'F' as const,
+        layers: { F: -1 },
         length: 9,
         permutation: baseMoves.F.inverse(),
       },
       L: {
-        direction: -1,
-        layer: 'L' as const,
+        layers: { L: -1 },
         length: 9,
         permutation: baseMoves.L,
       },
       "L'": {
-        direction: 1,
-        layer: 'L' as const,
+        layers: { L: 1 },
         length: 9,
         permutation: baseMoves.L.inverse(),
       },
       M: {
-        direction: -1,
-        layer: 'M' as const,
+        layers: { M: -1 },
         length: 9,
         permutation: baseMoves.M,
       },
       "M'": {
-        direction: 1,
-        layer: 'M' as const,
+        layers: { M: 1 },
         length: 9,
         permutation: baseMoves.M.inverse(),
       },
       R: {
-        direction: 1,
-        layer: 'R' as const,
+        layers: { R: 1 },
         length: 9,
         permutation: baseMoves.R,
       },
       "R'": {
-        direction: -1,
-        layer: 'R' as const,
+        layers: { R: -1 },
         length: 9,
         permutation: baseMoves.R.inverse(),
       },
       S: {
-        direction: 1,
-        layer: 'S' as const,
+        layers: { S: 1 },
         length: 9,
         permutation: baseMoves.S,
       },
       "S'": {
-        direction: -1,
-        layer: 'S' as const,
+        layers: { S: -1 },
         length: 9,
         permutation: baseMoves.S.inverse(),
       },
       U: {
-        direction: -1,
-        layer: 'U' as const,
+        layers: { U: -1 },
         length: 9,
         permutation: baseMoves.U,
       },
       "U'": {
-        direction: 1,
-        layer: 'U' as const,
+        layers: { U: 1 },
         length: 9,
         permutation: baseMoves.U.inverse(),
       },
     }[name];
 
-    this.direction = move.direction;
-    this.layer = move.layer;
+    this.layers = clone(move.layers);
     this.length = move.length;
     this.permutation = move.permutation.clone();
   }
