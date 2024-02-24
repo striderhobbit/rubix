@@ -10,7 +10,8 @@
   <div
     *ngFor="let cubicle of cubicles"
     [class]="cubicle.classList"
-    (animationend)="animations.next(cubicle.layers)"
+    [style.--direction]="move?.direction"
+    (animationend)="animations.next(move!.id)"
   >
     <div
       class="cubie"

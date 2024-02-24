@@ -13,6 +13,10 @@ export class Permutation {
     return this;
   }
 
+  clone(): Permutation {
+    return this.identity().setFromArray(this.#map);
+  }
+
   identity(): Permutation {
     return new Permutation(this.n);
   }
