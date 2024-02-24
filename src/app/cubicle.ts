@@ -31,12 +31,6 @@ export class Cubicle {
   #index: number;
   #layers: Layer[];
 
-  get classList(): string {
-    return ['cubicle']
-      .concat(this.#layers.map((layer) => `cubicle__layer--${layer}`))
-      .join(' ');
-  }
-
   get coordX(): number {
     return this.#coords.x;
   }

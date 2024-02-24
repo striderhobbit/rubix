@@ -9,7 +9,8 @@
 >
   <div
     *ngFor="let cubicle of cubicles"
-    [class]="cubicle.classList"
+    class="cubicle"
+    [attr.layers]="cubicle.layers.join(' ')"
     [style.--direction]="cubicle.direction(move)"
     (animationend)="animations.next(move!.id)"
   >

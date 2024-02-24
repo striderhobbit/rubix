@@ -27,17 +27,13 @@ export type Layer = 'B' | 'D' | 'E' | 'F' | 'L' | 'M' | 'R' | 'S' | 'U';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  @HostBinding('class')
-  get moveLayers(): string {
-    return this.move != null
-      ? ['animated']
-          .concat(
-            Object.keys(this.move.layers).map(
-              (layer) => `animation__layer--${layer}`
-            )
-          )
-          .join(' ')
-      : '';
+  @HostBinding('attr.animated-layers')
+  get moveLayers(): string | undefined {
+    if (this.move != null) {
+      return Object.keys(this.move.layers).join(' ');
+    }
+
+    return;
   }
 
   @HostListener('mousedown', ['$event'])
