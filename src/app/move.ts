@@ -23,12 +23,26 @@ class BaseMove extends Permutation {
 }
 
 const moves: Record<string, Pick<Move, 'domain' | 'permutation'>> = {
+  b: {
+    domain: {
+      slice: 'z',
+      directions: { B: -1, S: -1 },
+    },
+    permutation: new BaseMove('B').apply(new BaseMove('S').inverse()),
+  },
   B: {
     domain: {
       slice: 'z',
       directions: { B: -1 },
     },
     permutation: new BaseMove('B'),
+  },
+  d: {
+    domain: {
+      slice: 'y',
+      directions: { E: 1, D: 1 },
+    },
+    permutation: new BaseMove('E').apply(new BaseMove('D')),
   },
   D: {
     domain: {
@@ -44,6 +58,13 @@ const moves: Record<string, Pick<Move, 'domain' | 'permutation'>> = {
     },
     permutation: new BaseMove('E'),
   },
+  f: {
+    domain: {
+      slice: 'z',
+      directions: { S: 1, F: 1 },
+    },
+    permutation: new BaseMove('S').apply(new BaseMove('F')),
+  },
   F: {
     domain: {
       slice: 'z',
@@ -54,9 +75,9 @@ const moves: Record<string, Pick<Move, 'domain' | 'permutation'>> = {
   l: {
     domain: {
       slice: 'x',
-      directions: { M: -1, L: -1 },
+      directions: { L: -1, M: -1 },
     },
-    permutation: new BaseMove('M').apply(new BaseMove('L')),
+    permutation: new BaseMove('L').apply(new BaseMove('M')),
   },
   L: {
     domain: {
@@ -92,6 +113,13 @@ const moves: Record<string, Pick<Move, 'domain' | 'permutation'>> = {
       directions: { S: 1 },
     },
     permutation: new BaseMove('S'),
+  },
+  u: {
+    domain: {
+      slice: 'y',
+      directions: { U: -1, E: -1 },
+    },
+    permutation: new BaseMove('U').apply(new BaseMove('E').inverse()),
   },
   U: {
     domain: {

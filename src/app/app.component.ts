@@ -114,7 +114,7 @@ export class AppComponent {
       )
       .subscribe();
 
-    this.moves.next(new Move('r'));
-    this.moves.next(new Move('l'));
+    this.moves.next(new Move('u'));
+    this.moves.next(new Move('d'));
   }
 }
