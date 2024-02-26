@@ -11,15 +11,15 @@
     *ngFor="let cubicle of cubicles"
     class="cubicle"
     [attr.slices]="cubicle.slices"
-    [style.--direction]="cubicle.direction(move)"
+    [style]="{ '--sign': cubicle.sign(move) }"
     (animationend)="animations.next(move!.id)"
   >
     <div
       class="cubie"
       [style]="{
-        '--x': cubicle.vector.x,
-        '--y': cubicle.vector.y,
-        '--z': cubicle.vector.z
+        '--tx': cubicle.vector.x,
+        '--ty': cubicle.vector.y,
+        '--tz': cubicle.vector.z
       }"
     >
       <svg

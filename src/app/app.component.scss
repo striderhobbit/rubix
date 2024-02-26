@@ -7,7 +7,7 @@ $cubieSize: calc($cubeSize / 3);
             transform: rotate(0);
         }
         100% {
-            transform: rotate#{$axis }(calc(var(--direction) * 90deg));
+            transform: rotate#{$axis }(calc(var(--sign) * 90deg));
         }
     }
 }
@@ -68,7 +68,8 @@ $cubieSize: calc($cubeSize / 3);
 .cubie {
     height: $cubieSize;
     transform-style: preserve-3d;
-    transform: translate3d(calc(var(--x) * $cubieSize), calc(var(--y) * $cubieSize), calc((var(--z) - 1) * $cubieSize));
+    transform: translate3d(calc(var(--tx) * $cubieSize), calc(var(--ty) * $cubieSize), calc((var(--tz)) * $cubieSize))
+        translateZ(-$cubieSize);
     width: $cubieSize;
 }
 

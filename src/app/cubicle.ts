@@ -27,16 +27,14 @@ export class Cubicle {
     this.#vector = vector.clone();
   }
 
-  direction(move?: Move): number | undefined {
-    if (move != null) {
-      switch (move.domain.slice) {
-        case 'x':
-          return move.domain.directions[this.slices[0]];
-        case 'y':
-          return move.domain.directions[this.slices[1]];
-        case 'z':
-          return move.domain.directions[this.slices[2]];
-      }
+  sign(move?: Move): number | undefined {
+    switch (move?.domain.slice) {
+      case 'x':
+        return move.domain.directions[this.slices[0]];
+      case 'y':
+        return move.domain.directions[this.slices[1]];
+      case 'z':
+        return move.domain.directions[this.slices[2]];
     }
 
     return;
