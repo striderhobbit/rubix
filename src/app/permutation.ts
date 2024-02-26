@@ -51,21 +51,23 @@ export class Permutation {
   }
 
   setFromCycles(cycles: string): Permutation {
-    return Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
-      .map(([_, cycle]) => cycle.split(/\s+/).map(Number))
-      .reduce((permutation, cycle) => {
-        return permutation.apply(
-          this.identity().setFromArray(
-            cycle.reduce(
-              (map, x, i) =>
-                Object.assign(map, {
-                  [x]: cycle[(i + 1) % cycle.length],
-                }),
-              times(this.n)
+    return this.setFromArray(
+      Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
+        .map(([_, cycle]) => cycle.split(/\s+/).map(Number))
+        .reduce((permutation, cycle) => {
+          return permutation.apply(
+            this.identity().setFromArray(
+              cycle.reduce(
+                (map, x, i) =>
+                  Object.assign(map, {
+                    [x]: cycle[(i + 1) % cycle.length],
+                  }),
+                times(this.n)
+              )
             )
-          )
-        );
-      }, this.identity());
+          );
+        }, this.identity()).#map
+    );
   }
 
   toDisjointCycles(): string {

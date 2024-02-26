@@ -114,8 +114,7 @@ export class AppComponent {
       )
       .subscribe();
 
-    this.moves.next(new Move('U'));
-    this.moves.next(new Move("E'"));
-    this.moves.next(new Move('M'));
+    this.moves.next(new Move('r'));
+    this.moves.next(new Move('l'));
   }
 }
