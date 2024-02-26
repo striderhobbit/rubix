@@ -1,68 +1,44 @@
-import { clone } from 'lodash';
-import { Layer } from './app.component';
-
-interface Coords3 {
-  x: number;
-  y: number;
-  z: number;
-}
-
-enum LayerX {
-  L,
-  M,
-  R,
-}
-
-enum LayerY {
-  U,
-  E,
-  D,
-}
-
-enum LayerZ {
-  B,
-  S,
-  F,
-}
+import { Vector3 } from 'three';
+import { CubeSliceX, CubeSliceY, CubeSliceZ } from './app.component';
+import { Move } from './move';
 
 export class Cubicle {
-  #coords: Coords3;
-  #index: number;
-  #layers: Layer[];
-
-  get classList(): string {
-    return ['cubicle']
-      .concat(this.#layers.map((layer) => `cubicle__layer--${layer}`))
-      .join(' ');
-  }
-
-  get coordX(): number {
-    return this.#coords.x;
-  }
-
-  get coordY(): number {
-    return this.#coords.y;
-  }
-
-  get coordZ(): number {
-    return this.#coords.z;
-  }
+  readonly #index: number;
+  readonly #vector: Vector3;
 
   get index(): number {
     return this.#index;
   }
 
-  get layers(): Layer[] {
-    return this.#layers.slice();
+  get slices(): [CubeSliceX, CubeSliceY, CubeSliceZ] {
+    return [
+      ['L' as const, 'M' as const, 'R' as const][this.#vector.x],
+      ['U' as const, 'E' as const, 'D' as const][this.#vector.y],
+      ['B' as const, 'S' as const, 'F' as const][this.#vector.z],
+    ];
   }
 
-  constructor({ coords, index }: { coords: Coords3; index: number }) {
-    this.#coords = clone(coords);
+  get vector(): Vector3 {
+    return this.#vector.clone();
+  }
+
+  constructor({ index, vector }: { index: number; vector: Vector3 }) {
     this.#index = index;
-    this.#layers = [
-      LayerX[coords.x] as Layer,
-      LayerY[coords.y] as Layer,
-      LayerZ[coords.z] as Layer,
-    ];
+    this.#vector = vector.clone();
+  }
+
+  direction(move?: Move): number | undefined {
+    if (move != null) {
+      switch (move.domain.slice) {
+        case 'x':
+          return move.domain.directions[this.slices[0]];
+        case 'y':
+          return move.domain.directions[this.slices[1]];
+        case 'z':
+          return move.domain.directions[this.slices[2]];
+      }
+    }
+
+    return;
   }
 }
