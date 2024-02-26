@@ -77,7 +77,7 @@ export class AppComponent {
     .flatMap((x) =>
       times(3).flatMap((y) => times(3).map((z) => new Vector3(x, y, z)))
     )
-    .map((vector, i) => new Cubicle({ vector, index: 6 * i }));
+    .map((vector, i) => new Cubicle({ index: 6 * i, vector }));
 
   protected faces: CubeFace[] = Array(27)
     .fill(['back', 'down', 'front', 'left', 'right', 'up'])

@@ -3,8 +3,8 @@ import { CubeSliceX, CubeSliceY, CubeSliceZ } from './app.component';
 import { Move } from './move';
 
 export class Cubicle {
-  readonly #vector: Vector3;
   readonly #index: number;
+  readonly #vector: Vector3;
 
   get index(): number {
     return this.#index;
@@ -22,9 +22,9 @@ export class Cubicle {
     return this.#vector.clone();
   }
 
-  constructor({ vector, index }: { vector: Vector3; index: number }) {
-    this.#vector = vector.clone();
+  constructor({ index, vector }: { index: number; vector: Vector3 }) {
     this.#index = index;
+    this.#vector = vector.clone();
   }
 
   direction(move?: Move): number | undefined {

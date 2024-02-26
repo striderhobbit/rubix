@@ -174,9 +174,9 @@ export class Move {
   }
 
   constructor(private readonly name: MoveName) {
-    const move = moves[this.name];
+    const { domain, permutation } = moves[this.name];
 
-    this.domain = clone(move.domain);
-    this.permutation = move.permutation.clone();
+    this.domain = clone(domain);
+    this.permutation = permutation.clone();
   }
 }
