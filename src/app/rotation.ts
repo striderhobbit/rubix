@@ -1,24 +1,16 @@
 import { Quaternion, Vector3 } from 'three';
 
-interface AxisAngle {
+interface AxisAngle3 {
   axis: Vector3;
   angle: number;
 }
 
 export class Rotation {
-  #axisAngle!: AxisAngle;
+  #axisAngle!: AxisAngle3;
   #quaternion: Quaternion;
 
-  get axisX(): number {
-    return this.#axisAngle.axis.x;
-  }
-
-  get axisY(): number {
-    return this.#axisAngle.axis.y;
-  }
-
-  get axisZ(): number {
-    return this.#axisAngle.axis.z;
+  get axis(): Vector3 {
+    return this.#axisAngle.axis.clone();
   }
 
   get angle(): number {
@@ -35,7 +27,7 @@ export class Rotation {
     return this.applyQuaternion(rotation.#quaternion);
   }
 
-  applyAxisAngle(axisAngle: AxisAngle): Rotation {
+  applyAxisAngle(axisAngle: AxisAngle3): Rotation {
     return this.apply(
       new Rotation().setFromAxisAngle({
         axis: axisAngle.axis.clone().normalize(),
@@ -71,7 +63,7 @@ export class Rotation {
     });
   }
 
-  setFromAxisAngle(axisAngle: AxisAngle): Rotation {
+  setFromAxisAngle(axisAngle: AxisAngle3): Rotation {
     this.#quaternion.setFromAxisAngle(axisAngle.axis, axisAngle.angle);
 
     return this.#sync();
@@ -93,7 +85,7 @@ export class Rotation {
    *
    * @see https://www.wikiwand.com/en/Axis%E2%80%93angle_representation#Unit_quaternions
    */
-  #toAxisAngle(): AxisAngle {
+  #toAxisAngle(): AxisAngle3 {
     const s = this.#quaternion.w;
     const x = new Vector3(
       this.#quaternion.x,
