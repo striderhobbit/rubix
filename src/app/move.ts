@@ -1,4 +1,4 @@
-import { clone, mapValues, uniqueId } from 'lodash';
+import { cloneDeep, mapValues, uniqueId } from 'lodash';
 import { CubeSlice, CubeSliceX, CubeSliceY, CubeSliceZ } from './app.component';
 import { Permutation } from './permutation';
 
@@ -176,7 +176,7 @@ export class Move {
   constructor(private readonly name: MoveName) {
     const { domain, permutation } = moves[this.name];
 
-    this.domain = clone(domain);
+    this.domain = cloneDeep(domain);
     this.permutation = permutation.clone();
   }
 }
