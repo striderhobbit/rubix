@@ -41,26 +41,26 @@ $cubieSize: calc($cubeSize / 3);
     transform-style: preserve-3d;
     width: 100%;
 
-    :host([animated-layers]) & {
+    :host([animated-slices]) & {
         animation-duration: 1s;
         animation-timing-function: ease-in-out;
     }
 
-    :host([animated-layers~="L"]) &[layers~="L"],
-    :host([animated-layers~="M"]) &[layers~="M"],
-    :host([animated-layers~="R"]) &[layers~="R"] {
+    :host([animated-slices~="L"]) &[slices*="L"],
+    :host([animated-slices~="M"]) &[slices*="M"],
+    :host([animated-slices~="R"]) &[slices*="R"] {
         animation-name: rotateX;
     }
 
-    :host([animated-layers~="D"]) &[layers~="D"],
-    :host([animated-layers~="E"]) &[layers~="E"],
-    :host([animated-layers~="U"]) &[layers~="U"] {
+    :host([animated-slices~="D"]) &[slices*="D"],
+    :host([animated-slices~="E"]) &[slices*="E"],
+    :host([animated-slices~="U"]) &[slices*="U"] {
         animation-name: rotateY;
     }
 
-    :host([animated-layers~="B"]) &[layers~="B"],
-    :host([animated-layers~="F"]) &[layers~="F"],
-    :host([animated-layers~="S"]) &[layers~="S"] {
+    :host([animated-slices~="B"]) &[slices*="B"],
+    :host([animated-slices~="F"]) &[slices*="F"],
+    :host([animated-slices~="S"]) &[slices*="S"] {
         animation-name: rotateZ;
     }
 }

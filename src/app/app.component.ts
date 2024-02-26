@@ -17,9 +17,13 @@ import { Move } from './move';
 import { Permutation } from './permutation';
 import { Rotation } from './rotation';
 
-type Face = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
+type CubeFace = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
 
-export type Layer = 'B' | 'D' | 'E' | 'F' | 'L' | 'M' | 'R' | 'S' | 'U';
+export type CubeSliceX = 'L' | 'M' | 'R';
+export type CubeSliceY = 'U' | 'E' | 'D';
+export type CubeSliceZ = 'B' | 'S' | 'F';
+
+export type CubeSlice = CubeSliceX | CubeSliceY | CubeSliceZ;
 
 @Component({
   selector: 'app-root',
@@ -27,10 +31,10 @@ export type Layer = 'B' | 'D' | 'E' | 'F' | 'L' | 'M' | 'R' | 'S' | 'U';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  @HostBinding('attr.animated-layers')
-  get moveLayers(): string | undefined {
+  @HostBinding('attr.animated-slices')
+  get animatedSlices(): string | undefined {
     if (this.move != null) {
-      return Object.keys(this.move.layers).join(' ');
+      return Object.keys(this.move.domain.directions).join(' ');
     }
 
     return;
@@ -70,10 +74,12 @@ export class AppComponent {
   protected animations: Subject<string> = new Subject();
 
   protected cubicles: Cubicle[] = times(3)
-    .flatMap((x) => times(3).flatMap((y) => times(3).map((z) => ({ x, y, z }))))
-    .map((coords, i) => new Cubicle({ coords, index: 6 * i }));
+    .flatMap((x) =>
+      times(3).flatMap((y) => times(3).map((z) => new Vector3(x, y, z)))
+    )
+    .map((vector, i) => new Cubicle({ vector, index: 6 * i }));
 
-  protected faces: Face[] = Array(27)
+  protected faces: CubeFace[] = Array(27)
     .fill(['back', 'down', 'front', 'left', 'right', 'up'])
     .flat();
 
@@ -98,7 +104,7 @@ export class AppComponent {
               defer(async () => (this.move = move)),
               this.animations.pipe(
                 filter((id) => move.id === id),
-                take(move.length),
+                take(move.size),
                 finalize(() => this.permutation.apply(move.permutation))
               )
             ),
@@ -109,5 +115,7 @@ export class AppComponent {
       .subscribe();
 
     this.moves.next(new Move('U'));
+    this.moves.next(new Move("E'"));
+    this.moves.next(new Move('M'));
   }
 }

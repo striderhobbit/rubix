@@ -1,67 +1,44 @@
-import { at, clone, compact, intersection } from 'lodash';
-import { Layer } from './app.component';
+import { Vector3 } from 'three';
+import { CubeSliceX, CubeSliceY, CubeSliceZ } from './app.component';
 import { Move } from './move';
 
-interface Coords3 {
-  x: number;
-  y: number;
-  z: number;
-}
-
-enum LayerX {
-  L,
-  M,
-  R,
-}
-
-enum LayerY {
-  U,
-  E,
-  D,
-}
-
-enum LayerZ {
-  B,
-  S,
-  F,
-}
-
 export class Cubicle {
-  #coords: Coords3;
-  #index: number;
-  #layers: Layer[];
-
-  get coordX(): number {
-    return this.#coords.x;
-  }
-
-  get coordY(): number {
-    return this.#coords.y;
-  }
-
-  get coordZ(): number {
-    return this.#coords.z;
-  }
+  readonly #vector: Vector3;
+  readonly #index: number;
 
   get index(): number {
     return this.#index;
   }
 
-  get layers(): Layer[] {
-    return this.#layers.slice();
-  }
-
-  constructor({ coords, index }: { coords: Coords3; index: number }) {
-    this.#coords = clone(coords);
-    this.#index = index;
-    this.#layers = [
-      LayerX[coords.x] as Layer,
-      LayerY[coords.y] as Layer,
-      LayerZ[coords.z] as Layer,
+  get slices(): [CubeSliceX, CubeSliceY, CubeSliceZ] {
+    return [
+      ['L' as const, 'M' as const, 'R' as const][this.#vector.x],
+      ['U' as const, 'E' as const, 'D' as const][this.#vector.y],
+      ['B' as const, 'S' as const, 'F' as const][this.#vector.z],
     ];
   }
 
+  get vector(): Vector3 {
+    return this.#vector.clone();
+  }
+
+  constructor({ vector, index }: { vector: Vector3; index: number }) {
+    this.#vector = vector.clone();
+    this.#index = index;
+  }
+
   direction(move?: Move): number | undefined {
-    return compact(at(move?.layers, this.#layers))[0];
+    if (move != null) {
+      switch (move.domain.slice) {
+        case 'x':
+          return move.domain.directions[this.slices[0]];
+        case 'y':
+          return move.domain.directions[this.slices[1]];
+        case 'z':
+          return move.domain.directions[this.slices[2]];
+      }
+    }
+
+    return;
   }
 }

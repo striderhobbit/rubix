@@ -10,16 +10,16 @@
   <div
     *ngFor="let cubicle of cubicles"
     class="cubicle"
-    [attr.layers]="cubicle.layers.join(' ')"
+    [attr.slices]="cubicle.slices"
     [style.--direction]="cubicle.direction(move)"
     (animationend)="animations.next(move!.id)"
   >
     <div
       class="cubie"
       [style]="{
-        '--x': cubicle.coordX,
-        '--y': cubicle.coordY,
-        '--z': cubicle.coordZ
+        '--x': cubicle.vector.x,
+        '--y': cubicle.vector.y,
+        '--z': cubicle.vector.z
       }"
     >
       <svg

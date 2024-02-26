@@ -1,8 +1,8 @@
 import { clone, mapValues, uniqueId } from 'lodash';
-import { Layer } from './app.component';
+import { CubeSlice, CubeSliceX, CubeSliceY, CubeSliceZ } from './app.component';
 import { Permutation } from './permutation';
 
-const baseMoves: Record<Layer, Permutation> = mapValues(
+const baseMoves: Record<CubeSlice, Permutation> = mapValues(
   {
     B: '(0 36 144 108)(1 40 149 111)(2 38 146 110)(3 37 148 113)(4 41 147 109)(5 39 145 112)(18 90 126 54)(19 94 131 57)(20 92 128 56)(21 91 130 59)(22 95 129 55)(23 93 127 58)',
     D: '(36 51 158 148)(37 49 157 145)(38 52 156 147)(39 50 160 144)(40 48 159 146)(41 53 161 149)(42 105 152 94)(43 103 151 91)(44 106 150 93)(45 104 154 90)(46 102 153 92)(47 107 155 95)',
@@ -17,110 +17,166 @@ const baseMoves: Record<Layer, Permutation> = mapValues(
   (cycles) => new Permutation(27 * 6).setFromCycles(cycles)
 );
 
+const moves: Record<MoveName, Pick<Move, 'domain' | 'permutation'>> = {
+  B: {
+    domain: {
+      slice: 'z',
+      directions: { B: -1 },
+    },
+    permutation: baseMoves.B,
+  },
+  "B'": {
+    domain: {
+      slice: 'z',
+      directions: { B: 1 },
+    },
+    permutation: baseMoves.B.inverse(),
+  },
+  D: {
+    domain: {
+      slice: 'y',
+      directions: { D: 1 },
+    },
+    permutation: baseMoves.D,
+  },
+  "D'": {
+    domain: {
+      slice: 'y',
+      directions: { D: -1 },
+    },
+    permutation: baseMoves.D.inverse(),
+  },
+  E: {
+    domain: {
+      slice: 'y',
+      directions: { E: 1 },
+    },
+    permutation: baseMoves.E,
+  },
+  "E'": {
+    domain: {
+      slice: 'y',
+      directions: { E: -1 },
+    },
+    permutation: baseMoves.E.inverse(),
+  },
+  F: {
+    domain: {
+      slice: 'z',
+      directions: { F: 1 },
+    },
+    permutation: baseMoves.F,
+  },
+  "F'": {
+    domain: {
+      slice: 'z',
+      directions: { F: -1 },
+    },
+    permutation: baseMoves.F.inverse(),
+  },
+  L: {
+    domain: {
+      slice: 'x',
+      directions: { L: -1 },
+    },
+    permutation: baseMoves.L,
+  },
+  "L'": {
+    domain: {
+      slice: 'x',
+      directions: { L: 1 },
+    },
+    permutation: baseMoves.L.inverse(),
+  },
+  M: {
+    domain: {
+      slice: 'x',
+      directions: { M: -1 },
+    },
+    permutation: baseMoves.M,
+  },
+  "M'": {
+    domain: {
+      slice: 'x',
+      directions: { M: 1 },
+    },
+    permutation: baseMoves.M.inverse(),
+  },
+  R: {
+    domain: {
+      slice: 'x',
+      directions: { R: 1 },
+    },
+    permutation: baseMoves.R,
+  },
+  "R'": {
+    domain: {
+      slice: 'x',
+      directions: { R: -1 },
+    },
+    permutation: baseMoves.R.inverse(),
+  },
+  S: {
+    domain: {
+      slice: 'z',
+      directions: { S: 1 },
+    },
+    permutation: baseMoves.S,
+  },
+  "S'": {
+    domain: {
+      slice: 'z',
+      directions: { S: -1 },
+    },
+    permutation: baseMoves.S.inverse(),
+  },
+  U: {
+    domain: {
+      slice: 'y',
+      directions: { U: -1 },
+    },
+    permutation: baseMoves.U,
+  },
+  "U'": {
+    domain: {
+      slice: 'y',
+      directions: { U: 1 },
+    },
+    permutation: baseMoves.U.inverse(),
+  },
+};
+
+type Slice = 'x' | 'y' | 'z';
+
+export interface Move {
+  domain: {
+    [S in Slice]: {
+      slice: S;
+      directions: {
+        [_ in {
+          x: CubeSliceX;
+          y: CubeSliceY;
+          z: CubeSliceZ;
+        }[S]]?: -1 | 1;
+      };
+    };
+  }[Slice];
+  permutation: Permutation;
+}
+
+type MoveName = `${CubeSlice}${'' | "'"}`;
+
 export class Move {
   readonly id: string = uniqueId();
 
-  layers: Partial<Record<Layer, number>>;
-  length: number;
-  permutation: Permutation;
+  get size(): number {
+    return Object.keys(this.domain.directions).length * 9;
+  }
 
-  constructor(name: `${Layer}${'' | "'"}`) {
-    const move = {
-      B: {
-        direction: -1,
-        layers: { B: -1 },
-        length: 9,
-        permutation: baseMoves.B,
-      },
-      "B'": {
-        layers: { B: 1 },
-        length: 9,
-        permutation: baseMoves.B.inverse(),
-      },
-      D: {
-        layers: { D: 1 },
-        length: 9,
-        permutation: baseMoves.D,
-      },
-      "D'": {
-        layers: { D: -1 },
-        length: 9,
-        permutation: baseMoves.D.inverse(),
-      },
-      E: {
-        layers: { E: 1 },
-        length: 9,
-        permutation: baseMoves.E,
-      },
-      "E'": {
-        layers: { E: -1 },
-        length: 9,
-        permutation: baseMoves.E.inverse(),
-      },
-      F: {
-        layers: { F: 1 },
-        length: 9,
-        permutation: baseMoves.F,
-      },
-      "F'": {
-        layers: { F: -1 },
-        length: 9,
-        permutation: baseMoves.F.inverse(),
-      },
-      L: {
-        layers: { L: -1 },
-        length: 9,
-        permutation: baseMoves.L,
-      },
-      "L'": {
-        layers: { L: 1 },
-        length: 9,
-        permutation: baseMoves.L.inverse(),
-      },
-      M: {
-        layers: { M: -1 },
-        length: 9,
-        permutation: baseMoves.M,
-      },
-      "M'": {
-        layers: { M: 1 },
-        length: 9,
-        permutation: baseMoves.M.inverse(),
-      },
-      R: {
-        layers: { R: 1 },
-        length: 9,
-        permutation: baseMoves.R,
-      },
-      "R'": {
-        layers: { R: -1 },
-        length: 9,
-        permutation: baseMoves.R.inverse(),
-      },
-      S: {
-        layers: { S: 1 },
-        length: 9,
-        permutation: baseMoves.S,
-      },
-      "S'": {
-        layers: { S: -1 },
-        length: 9,
-        permutation: baseMoves.S.inverse(),
-      },
-      U: {
-        layers: { U: -1 },
-        length: 9,
-        permutation: baseMoves.U,
-      },
-      "U'": {
-        layers: { U: 1 },
-        length: 9,
-        permutation: baseMoves.U.inverse(),
-      },
-    }[name];
+  constructor(private readonly name: MoveName) {
+    const move = moves[this.name];
 
-    this.layers = clone(move.layers);
-    this.length = move.length;
+    this.domain = clone(move.domain);
     this.permutation = move.permutation.clone();
   }
 }
