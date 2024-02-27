@@ -17,8 +17,6 @@ import { Move } from './move';
 import { Permutation } from './permutation';
 import { Rotation } from './rotation';
 
-type CubeFace = 'back' | 'down' | 'front' | 'left' | 'right' | 'up';
-
 export type CubeSliceX = 'L' | 'M' | 'R';
 export type CubeSliceY = 'U' | 'E' | 'D';
 export type CubeSliceZ = 'B' | 'S' | 'F';

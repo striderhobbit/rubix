@@ -53,15 +53,15 @@ $cubieSize: calc($cubeSize / 3);
         animation-name: rotateX;
     }
 
-    :host([animated-slices~="D"]) &[slices*="D"],
+    :host([animated-slices~="U"]) &[slices*="U"],
     :host([animated-slices~="E"]) &[slices*="E"],
-    :host([animated-slices~="U"]) &[slices*="U"] {
+    :host([animated-slices~="D"]) &[slices*="D"] {
         animation-name: rotateY;
     }
 
     :host([animated-slices~="B"]) &[slices*="B"],
-    :host([animated-slices~="F"]) &[slices*="F"],
-    :host([animated-slices~="S"]) &[slices*="S"] {
+    :host([animated-slices~="S"]) &[slices*="S"],
+    :host([animated-slices~="F"]) &[slices*="F"] {
         animation-name: rotateZ;
     }
 }
