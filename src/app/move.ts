@@ -13,8 +13,8 @@ export class Move {
   constructor({ key, exp = 1 }: { key: BaseMove; exp?: number }) {
     const { permutation, twist } = baseMoves[key];
 
-    this.permutation = permutation.clone().power(exp);
-    this.twist = twist.clone().power(exp);
+    this.permutation = permutation.clone().pow(exp);
+    this.twist = twist.clone().pow(exp);
   }
 
   exp(cubicle: Cubicle): number {

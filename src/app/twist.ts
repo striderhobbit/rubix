@@ -37,7 +37,7 @@ export class Twist<S extends Slice = Slice> {
     return new Twist(this);
   }
 
-  power(exp: number): Twist<S> {
+  pow(exp: number): Twist<S> {
     this.#degree = mapValues(this.#degree, (degree) => degree && degree * exp);
 
     return this;

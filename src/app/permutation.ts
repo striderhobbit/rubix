@@ -38,7 +38,7 @@ export class Permutation {
     return this.#map[x];
   }
 
-  power(exp: number): Permutation {
+  pow(exp: number): Permutation {
     const permutation = this.clone();
 
     for (let k = 1; k < Math.abs(exp); k++) {
