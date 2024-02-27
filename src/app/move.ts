@@ -26,112 +26,112 @@ const moves: Record<string, Pick<Move, 'domain' | 'permutation'>> = {
   b: {
     domain: {
       slice: 'z',
-      directions: { B: -1, S: -1 },
+      sign: { B: -1, S: -1 },
     },
     permutation: new BaseMove('B').apply(new BaseMove('S').inverse()),
   },
   B: {
     domain: {
       slice: 'z',
-      directions: { B: -1 },
+      sign: { B: -1 },
     },
     permutation: new BaseMove('B'),
   },
   d: {
     domain: {
       slice: 'y',
-      directions: { E: 1, D: 1 },
+      sign: { E: 1, D: 1 },
     },
     permutation: new BaseMove('E').apply(new BaseMove('D')),
   },
   D: {
     domain: {
       slice: 'y',
-      directions: { D: 1 },
+      sign: { D: 1 },
     },
     permutation: new BaseMove('D'),
   },
   E: {
     domain: {
       slice: 'y',
-      directions: { E: 1 },
+      sign: { E: 1 },
     },
     permutation: new BaseMove('E'),
   },
   f: {
     domain: {
       slice: 'z',
-      directions: { S: 1, F: 1 },
+      sign: { S: 1, F: 1 },
     },
     permutation: new BaseMove('S').apply(new BaseMove('F')),
   },
   F: {
     domain: {
       slice: 'z',
-      directions: { F: 1 },
+      sign: { F: 1 },
     },
     permutation: new BaseMove('F'),
   },
   l: {
     domain: {
       slice: 'x',
-      directions: { L: -1, M: -1 },
+      sign: { L: -1, M: -1 },
     },
     permutation: new BaseMove('L').apply(new BaseMove('M')),
   },
   L: {
     domain: {
       slice: 'x',
-      directions: { L: -1 },
+      sign: { L: -1 },
     },
     permutation: new BaseMove('L'),
   },
   M: {
     domain: {
       slice: 'x',
-      directions: { M: -1 },
+      sign: { M: -1 },
     },
     permutation: new BaseMove('M'),
   },
   r: {
     domain: {
       slice: 'x',
-      directions: { M: 1, R: 1 },
+      sign: { M: 1, R: 1 },
     },
     permutation: new BaseMove('M').inverse().apply(new BaseMove('R')),
   },
   R: {
     domain: {
       slice: 'x',
-      directions: { R: 1 },
+      sign: { R: 1 },
     },
     permutation: new BaseMove('R'),
   },
   S: {
     domain: {
       slice: 'z',
-      directions: { S: 1 },
+      sign: { S: 1 },
     },
     permutation: new BaseMove('S'),
   },
   u: {
     domain: {
       slice: 'y',
-      directions: { U: -1, E: -1 },
+      sign: { U: -1, E: -1 },
     },
     permutation: new BaseMove('U').apply(new BaseMove('E').inverse()),
   },
   U: {
     domain: {
       slice: 'y',
-      directions: { U: -1 },
+      sign: { U: -1 },
     },
     permutation: new BaseMove('U'),
   },
   x: {
     domain: {
       slice: 'x',
-      directions: { L: 1, M: 1, R: 1 },
+      sign: { L: 1, M: 1, R: 1 },
     },
     permutation: new BaseMove('L')
       .inverse()
@@ -141,7 +141,7 @@ const moves: Record<string, Pick<Move, 'domain' | 'permutation'>> = {
   y: {
     domain: {
       slice: 'y',
-      directions: { U: -1, E: -1, D: -1 },
+      sign: { U: -1, E: -1, D: -1 },
     },
     permutation: new BaseMove('U')
       .apply(new BaseMove('E').inverse())
@@ -150,7 +150,7 @@ const moves: Record<string, Pick<Move, 'domain' | 'permutation'>> = {
   z: {
     domain: {
       slice: 'z',
-      directions: { B: 1, S: 1, F: 1 },
+      sign: { B: 1, S: 1, F: 1 },
     },
     permutation: new BaseMove('B')
       .inverse()
@@ -165,7 +165,7 @@ export interface Move {
   domain: {
     [S in Slice]: {
       slice: S;
-      directions: {
+      sign: {
         [_ in {
           x: CubeSliceX;
           y: CubeSliceY;
@@ -181,7 +181,7 @@ export class Move {
   readonly id: string = uniqueId();
 
   get size(): number {
-    return Object.keys(this.domain.directions).length * 9;
+    return Object.keys(this.domain.sign).length * 9;
   }
 
   constructor(private readonly name: string) {

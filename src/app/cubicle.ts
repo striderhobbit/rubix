@@ -30,11 +30,11 @@ export class Cubicle {
   sign(move?: Move): number | undefined {
     switch (move?.domain.slice) {
       case 'x':
-        return move.domain.directions[this.slices[0]];
+        return move.domain.sign[this.slices[0]];
       case 'y':
-        return move.domain.directions[this.slices[1]];
+        return move.domain.sign[this.slices[1]];
       case 'z':
-        return move.domain.directions[this.slices[2]];
+        return move.domain.sign[this.slices[2]];
     }
 
     return;

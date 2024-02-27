@@ -11,7 +11,7 @@
     *ngFor="let cubicle of cubicles"
     class="cubicle"
     [attr.slices]="cubicle.slices"
-    [style]="{ '--sign': cubicle.sign(move) }"
+    [style.--sign]="cubicle.sign(move)"
     (animationend)="animations.next(move!.id)"
   >
     <div

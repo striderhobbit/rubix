@@ -34,7 +34,7 @@ export class AppComponent {
   @HostBinding('attr.animated-slices')
   get animatedSlices(): string | undefined {
     if (this.move != null) {
-      return Object.keys(this.move.domain.directions).join(' ');
+      return Object.keys(this.move.domain.sign).join(' ');
     }
 
     return;
@@ -122,5 +122,7 @@ export class AppComponent {
 
     this.moves.next(new Move('u'));
     this.moves.next(new Move('d'));
+    this.moves.next(new Move('l'));
+    this.moves.next(new Move('R'));
   }
 }
