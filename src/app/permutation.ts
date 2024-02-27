@@ -3,7 +3,7 @@ import { at, isEqual, pull, sortBy, times } from 'lodash';
 export class Permutation {
   #map: number[];
 
-  constructor(public n: number) {
+  constructor(public readonly n: number) {
     this.#map = times(n);
   }
 
