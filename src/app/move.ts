@@ -10,10 +10,10 @@ export class Move {
   readonly permutation: Permutation;
   readonly twist: Twist;
 
-  constructor(name: `${BaseMove}`) {
-    const { cycles, twist } = baseMoves[name];
+  constructor(name: BaseMove) {
+    const { permutation, twist } = baseMoves[name];
 
-    this.permutation = new Permutation(27 * 6).setFromCycles(cycles);
+    this.permutation = permutation.clone();
     this.twist = twist.clone();
   }
 
