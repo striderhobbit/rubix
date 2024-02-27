@@ -112,6 +112,6 @@ export class AppComponent {
       )
       .subscribe();
 
-    this.moves.next(new Move({ key: 'R', exp: -2 }));
+    this.moves.next(new Move({ key: 'R', order: -2 }));
   }
 }

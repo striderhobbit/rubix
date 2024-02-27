@@ -7,7 +7,7 @@ $cubieSize: calc($cubeSize / 3);
             transform: rotate(0);
         }
         100% {
-            transform: rotate#{$axis }(calc(var(--exp) * 90deg));
+            transform: rotate#{$axis }(calc(var(--order) * 90deg));
         }
     }
 }

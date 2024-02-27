@@ -38,14 +38,14 @@ export class Permutation {
     return this.#map[x];
   }
 
-  pow(exp: number): Permutation {
+  pow(order: number): Permutation {
     const permutation = this.clone();
 
-    for (let k = 1; k < Math.abs(exp); k++) {
+    for (let k = 1; k < Math.abs(order); k++) {
       this.apply(permutation);
     }
 
-    if (exp < 0) {
+    if (order < 0) {
       this.invert();
     }
 

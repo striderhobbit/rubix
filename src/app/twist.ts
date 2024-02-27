@@ -37,8 +37,11 @@ export class Twist<A extends Axis = Axis> {
     return new Twist(this);
   }
 
-  pow(exp: number): Twist<A> {
-    this.#degree = mapValues(this.#degree, (degree) => degree && degree * exp);
+  pow(order: number): Twist<A> {
+    this.#degree = mapValues(
+      this.#degree,
+      (degree) => degree && degree * order
+    );
 
     return this;
   }
