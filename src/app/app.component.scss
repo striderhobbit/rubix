@@ -26,12 +26,13 @@ $cubieSize: calc($cubeSize / 3);
     transform: rotate3d(var(--rotate-x), var(--rotate-y), var(--rotate-z), calc(var(--rotate-a) * 1rad));
     width: $cubeSize;
 
-    --color-back: #0246ad;
-    --color-down: #ffd500;
-    --color-front: #009b48;
-    --color-left: #ff5800;
-    --color-right: #b71234;
-    --color-up: white;
+    --color-0: #0246ad;
+    --color-1: #ffd500;
+    --color-2: #009b48;
+    --color-3: #ff5800;
+    --color-4: #b71234;
+    --color-5: #ffffff;
+    --color-6: #000000;
 }
 
 .cubicle {
@@ -78,27 +79,27 @@ $cubieSize: calc($cubeSize / 3);
     border-radius: calc($cubieSize / 10);
     position: absolute;
 
-    &--back {
+    &--0 {
         transform: rotateY(180deg) translateZ(calc($cubieSize / 2));
     }
 
-    &--down {
+    &--1 {
         transform: rotateX(-90deg) translateZ(calc($cubieSize / 2));
     }
 
-    &--front {
+    &--2 {
         transform: translateZ(calc($cubieSize / 2));
     }
 
-    &--left {
+    &--3 {
         transform: rotateY(-90deg) translateZ(calc($cubieSize / 2));
     }
 
-    &--right {
+    &--4 {
         transform: rotateY(90deg) translateZ(calc($cubieSize / 2));
     }
 
-    &--up {
+    &--5 {
         transform: rotateX(90deg) translateZ(calc($cubieSize / 2));
     }
 }

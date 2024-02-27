@@ -79,9 +79,15 @@ export class AppComponent {
     )
     .map((vector, i) => new Cubicle({ index: 6 * i, vector }));
 
-  protected faces: CubeFace[] = Array(27)
-    .fill(['back', 'down', 'front', 'left', 'right', 'up'])
-    .flat();
+  protected faces: number[] = [
+    0, 6, 6, 3, 6, 5, 6, 6, 6, 3, 6, 5, 6, 6, 2, 3, 6, 5, 0, 6, 6, 3, 6, 6, 6,
+    6, 6, 3, 6, 6, 6, 6, 2, 3, 6, 6, 0, 1, 6, 3, 6, 6, 6, 1, 6, 3, 6, 6, 6, 1,
+    2, 3, 6, 6, 0, 6, 6, 6, 6, 5, 6, 6, 6, 6, 6, 5, 6, 6, 2, 6, 6, 5, 0, 6, 6,
+    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 6, 0, 1, 6, 6, 6, 6, 6, 1, 6, 6,
+    6, 6, 6, 1, 2, 6, 6, 6, 0, 6, 6, 6, 4, 5, 6, 6, 6, 6, 4, 5, 6, 6, 2, 6, 4,
+    5, 0, 6, 6, 6, 4, 6, 6, 6, 6, 6, 4, 6, 6, 6, 2, 6, 4, 6, 0, 1, 6, 6, 4, 6,
+    6, 1, 6, 6, 4, 6, 6, 1, 2, 6, 4, 6,
+  ];
 
   protected move?: Move;
 
@@ -114,7 +120,7 @@ export class AppComponent {
       )
       .subscribe();
 
-    this.moves.next(new Move('u'));
-    this.moves.next(new Move('d'));
+    // this.moves.next(new Move('u'));
+    // this.moves.next(new Move('d'));
   }
 }
