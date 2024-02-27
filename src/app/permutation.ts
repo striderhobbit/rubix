@@ -30,8 +30,26 @@ export class Permutation {
     );
   }
 
+  invert(): Permutation {
+    return this.setFromArray(this.inverse().#map);
+  }
+
   map(x: number): number {
     return this.#map[x];
+  }
+
+  power(exp: number): Permutation {
+    const permutation = this.clone();
+
+    for (let k = 1; k < Math.abs(exp); k++) {
+      this.apply(permutation);
+    }
+
+    if (exp < 0) {
+      this.invert();
+    }
+
+    return this;
   }
 
   pull(y: number): number {
