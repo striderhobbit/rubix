@@ -10,11 +10,11 @@ export class Move {
   readonly permutation: Permutation;
   readonly twist: Twist;
 
-  constructor(name: BaseMove) {
-    const { permutation, twist } = baseMoves[name];
+  constructor({ key, exp = 1 }: { key: BaseMove; exp?: number }) {
+    const { permutation, twist } = baseMoves[key];
 
-    this.permutation = permutation.clone();
-    this.twist = twist.clone();
+    this.permutation = permutation.clone().power(exp);
+    this.twist = twist.clone().power(exp);
   }
 
   exp(cubicle: Cubicle): number {

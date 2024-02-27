@@ -112,9 +112,6 @@ export class AppComponent {
       )
       .subscribe();
 
-    this.moves.next(new Move('u'));
-    this.moves.next(new Move('d'));
-    this.moves.next(new Move('l'));
-    this.moves.next(new Move('R'));
+    this.moves.next(new Move({ key: 'R', exp: -2 }));
   }
 }

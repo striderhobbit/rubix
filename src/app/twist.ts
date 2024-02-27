@@ -1,4 +1,4 @@
-import { clone } from 'lodash';
+import { clone, mapValues } from 'lodash';
 import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
 type Slice = 'x' | 'y' | 'z';
@@ -12,8 +12,9 @@ type Degree<S extends Slice> = {
 };
 
 export class Twist<S extends Slice = Slice> {
-  readonly #degree: Degree<S>;
   readonly #slice: S;
+
+  #degree: Degree<S>;
 
   get degree(): Degree<S> {
     return clone(this.#degree);
@@ -34,5 +35,11 @@ export class Twist<S extends Slice = Slice> {
 
   clone(): Twist<S> {
     return new Twist(this);
+  }
+
+  power(exp: number): Twist<S> {
+    this.#degree = mapValues(this.#degree, (degree) => degree && degree * exp);
+
+    return this;
   }
 }
