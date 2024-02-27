@@ -10,7 +10,6 @@
   <div
     *ngFor="let cubicle of cubicles"
     class="cubicle"
-    [attr.slices]="cubicle.slices"
     [style.--order]="move?.order(cubicle)"
     (animationend)="animations.next(move!.id)"
   >

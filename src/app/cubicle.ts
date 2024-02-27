@@ -9,14 +9,6 @@ export class Cubicle {
     return this.#index;
   }
 
-  get slices(): [CubeSliceX, CubeSliceY, CubeSliceZ] {
-    return [
-      ['L' as const, 'M' as const, 'R' as const][this.#vector.x],
-      ['U' as const, 'E' as const, 'D' as const][this.#vector.y],
-      ['B' as const, 'S' as const, 'F' as const][this.#vector.z],
-    ];
-  }
-
   get vector(): Vector3 {
     return this.#vector.clone();
   }

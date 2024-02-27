@@ -42,26 +42,20 @@ $cubieSize: calc($cubeSize / 3);
     transform-style: preserve-3d;
     width: 100%;
 
-    :host([animated-slices]) & {
+    :host([rotation-axis]) & {
         animation-duration: 1s;
         animation-timing-function: ease-in-out;
     }
 
-    :host([animated-slices~="L"]) &[slices*="L"],
-    :host([animated-slices~="M"]) &[slices*="M"],
-    :host([animated-slices~="R"]) &[slices*="R"] {
+    :host([rotation-axis="x"]) & {
         animation-name: rotateX;
     }
 
-    :host([animated-slices~="U"]) &[slices*="U"],
-    :host([animated-slices~="E"]) &[slices*="E"],
-    :host([animated-slices~="D"]) &[slices*="D"] {
+    :host([rotation-axis="y"]) & {
         animation-name: rotateY;
     }
 
-    :host([animated-slices~="B"]) &[slices*="B"],
-    :host([animated-slices~="S"]) &[slices*="S"],
-    :host([animated-slices~="F"]) &[slices*="F"] {
+    :host([rotation-axis="z"]) & {
         animation-name: rotateZ;
     }
 }

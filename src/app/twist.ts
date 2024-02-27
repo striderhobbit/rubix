@@ -13,8 +13,7 @@ type Orders<A extends Axis> = {
 
 export class Twist<A extends Axis = Axis> {
   readonly #axis: A;
-
-  #orders: Orders<A>;
+  readonly #orders: Orders<A>;
 
   get axis(): A {
     return this.#axis;
@@ -22,10 +21,6 @@ export class Twist<A extends Axis = Axis> {
 
   get orders(): Orders<A> {
     return clone(this.#orders);
-  }
-
-  get size(): number {
-    return 9 * Object.keys(this.#orders).length;
   }
 
   constructor({ axis, orders }: { axis: A; orders: Orders<A> }) {
@@ -38,7 +33,11 @@ export class Twist<A extends Axis = Axis> {
   }
 
   pow(exp: number): Twist<A> {
-    this.#orders = mapValues(this.#orders, (order) => order && order * exp);
+    let slice: keyof Orders<A>;
+
+    for (slice in this.#orders) {
+      this.#orders[slice] = (this.#orders[slice] ?? 0) * exp;
+    }
 
     return this;
   }

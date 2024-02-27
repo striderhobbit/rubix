@@ -23,13 +23,9 @@ import { Rotation } from './rotation';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  @HostBinding('attr.animated-slices')
-  get animatedSlices(): string | undefined {
-    if (this.move != null) {
-      return Object.keys(this.move.twist.orders).join(' ');
-    }
-
-    return;
+  @HostBinding('attr.rotation-axis')
+  get rotationAxis(): string | undefined {
+    return this.move?.twist.axis;
   }
 
   @HostListener('mousedown', ['$event'])
@@ -102,7 +98,7 @@ export class AppComponent {
               defer(async () => (this.move = move)),
               this.animations.pipe(
                 filter((id) => move.id === id),
-                take(move.twist.size),
+                take(27),
                 finalize(() => this.permutation.apply(move.permutation))
               )
             ),
@@ -113,5 +109,7 @@ export class AppComponent {
       .subscribe();
 
     this.moves.next(new Move({ key: 'R', exp: -2 }));
+    this.moves.next(new Move({ key: 'l', exp: 1 }));
+    this.moves.next(new Move({ key: 'u', exp: 1 }));
   }
 }
