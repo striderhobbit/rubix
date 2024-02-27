@@ -1,5 +1,4 @@
 import { Vector3 } from 'three';
-import { Move } from './move';
 import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
 export class Cubicle {
@@ -25,18 +24,5 @@ export class Cubicle {
   constructor({ index, vector }: { index: number; vector: Vector3 }) {
     this.#index = index;
     this.#vector = vector.clone();
-  }
-
-  exp(move?: Move): number | undefined {
-    switch (move?.twist.slice) {
-      case 'x':
-        return move.twist.degree[this.slices[0]];
-      case 'y':
-        return move.twist.degree[this.slices[1]];
-      case 'z':
-        return move.twist.degree[this.slices[2]];
-    }
-
-    return;
   }
 }

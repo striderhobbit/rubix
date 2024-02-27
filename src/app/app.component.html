@@ -11,7 +11,7 @@
     *ngFor="let cubicle of cubicles"
     class="cubicle"
     [attr.slices]="cubicle.slices"
-    [style.--exp]="cubicle.exp(move)"
+    [style.--exp]="move?.exp(cubicle)"
     (animationend)="animations.next(move!.id)"
   >
     <div

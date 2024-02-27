@@ -102,7 +102,7 @@ export class AppComponent {
               defer(async () => (this.move = move)),
               this.animations.pipe(
                 filter((id) => move.id === id),
-                take(move.size),
+                take(move.twist.size),
                 finalize(() => this.permutation.apply(move.permutation))
               )
             ),
