@@ -20,11 +20,11 @@ export class Move {
   order(cubicle: Cubicle): number {
     switch (this.twist.axis) {
       case 'x':
-        return this.twist.degree[cubicle.slices[0]] ?? 0;
+        return this.twist.order[cubicle.slices[0]] ?? 0;
       case 'y':
-        return this.twist.degree[cubicle.slices[1]] ?? 0;
+        return this.twist.order[cubicle.slices[1]] ?? 0;
       case 'z':
-        return this.twist.degree[cubicle.slices[2]] ?? 0;
+        return this.twist.order[cubicle.slices[2]] ?? 0;
     }
   }
 }
