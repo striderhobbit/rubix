@@ -10,21 +10,21 @@ export class Move {
   readonly permutation: Permutation;
   readonly twist: Twist;
 
-  constructor({ key, order = 1 }: { key: BaseMove; order?: number }) {
+  constructor({ key, exp = 1 }: { key: BaseMove; exp?: number }) {
     const { permutation, twist } = baseMoves[key];
 
-    this.permutation = permutation.clone().pow(order);
-    this.twist = twist.clone().pow(order);
+    this.permutation = permutation.clone().pow(exp);
+    this.twist = twist.clone().pow(exp);
   }
 
   order(cubicle: Cubicle): number {
     switch (this.twist.axis) {
       case 'x':
-        return this.twist.order[cubicle.slices[0]] ?? 0;
+        return this.twist.orders[cubicle.slices[0]] ?? 0;
       case 'y':
-        return this.twist.order[cubicle.slices[1]] ?? 0;
+        return this.twist.orders[cubicle.slices[1]] ?? 0;
       case 'z':
-        return this.twist.order[cubicle.slices[2]] ?? 0;
+        return this.twist.orders[cubicle.slices[2]] ?? 0;
     }
   }
 }

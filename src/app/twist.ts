@@ -3,7 +3,7 @@ import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
 type Axis = 'x' | 'y' | 'z';
 
-type Order<A extends Axis> = {
+type Orders<A extends Axis> = {
   [Slice in {
     x: CubeSliceX;
     y: CubeSliceY;
@@ -14,31 +14,31 @@ type Order<A extends Axis> = {
 export class Twist<A extends Axis = Axis> {
   readonly #axis: A;
 
-  #order: Order<A>;
+  #orders: Orders<A>;
 
   get axis(): A {
     return this.#axis;
   }
 
-  get order(): Order<A> {
-    return clone(this.#order);
+  get orders(): Orders<A> {
+    return clone(this.#orders);
   }
 
   get size(): number {
-    return 9 * Object.keys(this.#order).length;
+    return 9 * Object.keys(this.#orders).length;
   }
 
-  constructor({ axis, order }: { axis: A; order: Order<A> }) {
+  constructor({ axis, orders }: { axis: A; orders: Orders<A> }) {
     this.#axis = axis;
-    this.#order = clone(order);
+    this.#orders = clone(orders);
   }
 
   clone(): Twist<A> {
     return new Twist(this);
   }
 
-  pow(order: number): Twist<A> {
-    this.#order = mapValues(this.#order, (x) => x && x * order);
+  pow(exp: number): Twist<A> {
+    this.#orders = mapValues(this.#orders, (order) => order && order * exp);
 
     return this;
   }
