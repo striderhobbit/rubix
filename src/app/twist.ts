@@ -4,7 +4,7 @@ import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 type Axis = 'x' | 'y' | 'z';
 
 type Degree<A extends Axis> = {
-  [_ in {
+  [Slice in {
     x: CubeSliceX;
     y: CubeSliceY;
     z: CubeSliceZ;
