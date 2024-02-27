@@ -26,7 +26,7 @@ export class AppComponent {
   @HostBinding('attr.animated-slices')
   get animatedSlices(): string | undefined {
     if (this.move != null) {
-      return Object.keys(this.move.domain.sign).join(' ');
+      return Object.keys(this.move.domain.exp).join(' ');
     }
 
     return;

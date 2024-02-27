@@ -9,7 +9,7 @@ export class Move {
   readonly permutation: Permutation;
 
   get size(): number {
-    return 9 * Object.keys(this.domain.sign).length;
+    return 9 * Object.keys(this.domain.exp).length;
   }
 
   constructor(name: `${BaseMove}`) {

@@ -27,12 +27,12 @@ export type CubeSliceZ = 'B' | 'S' | 'F';
 export type MoveDomain = {
   [S in Slice]: {
     slice: S;
-    sign: {
+    exp: {
       [_ in {
         x: CubeSliceX;
         y: CubeSliceY;
         z: CubeSliceZ;
-      }[S]]?: -1 | 1;
+      }[S]]?: number;
     };
   };
 }[Slice];
