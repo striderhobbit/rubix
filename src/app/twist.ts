@@ -12,9 +12,9 @@ type Degree<S extends Slice> = {
 };
 
 export class Twist<S extends Slice = Slice> {
-  readonly #slice: S;
-
   #degree: Degree<S>;
+
+  readonly #slice: S;
 
   get degree(): Degree<S> {
     return clone(this.#degree);
