@@ -75,6 +75,7 @@ $cubieSize: calc($cubeSize / 3);
 }
 
 .cubie__face {
+    backface-visibility: hidden;
     background-color: black;
     border-radius: calc($cubieSize / 10);
     position: absolute;

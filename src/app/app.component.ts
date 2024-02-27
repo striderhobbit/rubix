@@ -73,13 +73,7 @@ export class AppComponent {
 
   protected animations: Subject<string> = new Subject();
 
-  protected cubicles: Cubicle[] = times(3)
-    .flatMap((x) =>
-      times(3).flatMap((y) => times(3).map((z) => new Vector3(x, y, z)))
-    )
-    .map((vector, i) => new Cubicle({ index: 6 * i, vector }));
-
-  protected faces: number[] = [
+  protected colors: number[] = [
     0, 6, 6, 3, 6, 5, 6, 6, 6, 3, 6, 5, 6, 6, 2, 3, 6, 5, 0, 6, 6, 3, 6, 6, 6,
     6, 6, 3, 6, 6, 6, 6, 2, 3, 6, 6, 0, 1, 6, 3, 6, 6, 6, 1, 6, 3, 6, 6, 6, 1,
     2, 3, 6, 6, 0, 6, 6, 6, 6, 5, 6, 6, 6, 6, 6, 5, 6, 6, 2, 6, 6, 5, 0, 6, 6,
@@ -88,6 +82,12 @@ export class AppComponent {
     5, 0, 6, 6, 6, 4, 6, 6, 6, 6, 6, 4, 6, 6, 6, 2, 6, 4, 6, 0, 1, 6, 6, 4, 6,
     6, 1, 6, 6, 4, 6, 6, 1, 2, 6, 4, 6,
   ];
+
+  protected cubicles: Cubicle[] = times(3)
+    .flatMap((x) =>
+      times(3).flatMap((y) => times(3).map((z) => new Vector3(x, y, z)))
+    )
+    .map((vector, i) => new Cubicle({ index: 6 * i, vector }));
 
   protected move?: Move;
 
@@ -120,7 +120,7 @@ export class AppComponent {
       )
       .subscribe();
 
-    // this.moves.next(new Move('u'));
-    // this.moves.next(new Move('d'));
+    this.moves.next(new Move('u'));
+    this.moves.next(new Move('d'));
   }
 }
