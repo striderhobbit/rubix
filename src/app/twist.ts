@@ -1,22 +1,26 @@
 import { clone, mapValues } from 'lodash';
 import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
-type Slice = 'x' | 'y' | 'z';
+type Axis = 'x' | 'y' | 'z';
 
-type Degree<S extends Slice> = {
+type Degree<A extends Axis> = {
   [_ in {
     x: CubeSliceX;
     y: CubeSliceY;
     z: CubeSliceZ;
-  }[S]]?: number;
+  }[A]]?: number;
 };
 
-export class Twist<S extends Slice = Slice> {
-  #degree: Degree<S>;
+export class Twist<A extends Axis = Axis> {
+  readonly #axis: A;
 
-  readonly #slice: S;
+  #degree: Degree<A>;
 
-  get degree(): Degree<S> {
+  get axis(): A {
+    return this.#axis;
+  }
+
+  get degree(): Degree<A> {
     return clone(this.#degree);
   }
 
@@ -24,20 +28,16 @@ export class Twist<S extends Slice = Slice> {
     return 9 * Object.keys(this.#degree).length;
   }
 
-  get slice(): S {
-    return this.#slice;
-  }
-
-  constructor({ degree, slice }: { degree: Degree<S>; slice: S }) {
+  constructor({ axis, degree }: { axis: A; degree: Degree<A> }) {
+    this.#axis = axis;
     this.#degree = clone(degree);
-    this.#slice = slice;
   }
 
-  clone(): Twist<S> {
+  clone(): Twist<A> {
     return new Twist(this);
   }
 
-  pow(exp: number): Twist<S> {
+  pow(exp: number): Twist<A> {
     this.#degree = mapValues(this.#degree, (degree) => degree && degree * exp);
 
     return this;

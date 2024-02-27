@@ -18,7 +18,7 @@ export class Move {
   }
 
   exp(cubicle: Cubicle): number {
-    switch (this.twist.slice) {
+    switch (this.twist.axis) {
       case 'x':
         return this.twist.degree[cubicle.slices[0]] ?? 0;
       case 'y':
