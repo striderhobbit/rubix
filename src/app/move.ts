@@ -1,14 +1,8 @@
 import { cloneDeep, uniqueId } from 'lodash';
-import {
-  BaseMove,
-  CubeSliceX,
-  CubeSliceY,
-  CubeSliceZ,
-  Slice,
-} from './app.component';
 import { Permutation } from './permutation';
+import { BaseMove, MoveDomain } from './rubik';
 
-const baseMoves: Record<BaseMove, { cycles: string; domain: Domain }> = {
+const baseMoves: Record<BaseMove, { cycles: string; domain: MoveDomain }> = {
   b: {
     cycles:
       '(0 36 144 108)(1 40 149 111)(2 38 146 110)(3 37 148 113)(4 41 147 109)(5 39 145 112)(6 42 150 114)(7 46 155 117)(8 44 152 116)(9 43 154 119)(10 47 153 115)(11 45 151 118)(18 90 126 54)(19 94 131 57)(20 92 128 56)(21 91 130 59)(22 95 129 55)(23 93 127 58)(24 96 132 60)(25 100 137 63)(26 98 134 62)(27 97 136 65)(28 101 135 61)(29 99 133 64)',
@@ -101,21 +95,8 @@ const baseMoves: Record<BaseMove, { cycles: string; domain: Domain }> = {
   },
 };
 
-type Domain = {
-  [S in Slice]: {
-    slice: S;
-    sign: {
-      [_ in {
-        x: CubeSliceX;
-        y: CubeSliceY;
-        z: CubeSliceZ;
-      }[S]]?: -1 | 1;
-    };
-  };
-}[Slice];
-
 export class Move {
-  readonly domain: Domain;
+  readonly domain: MoveDomain;
   readonly id: string = uniqueId();
   readonly permutation: Permutation;
 
@@ -123,7 +104,7 @@ export class Move {
     return 9 * Object.keys(this.domain.sign).length;
   }
 
-  constructor(name: `${BaseMove}${''}`) {
+  constructor(name: `${BaseMove}`) {
     const { domain, cycles } = baseMoves[name];
 
     this.domain = cloneDeep(domain);

@@ -1,6 +1,6 @@
 import { Vector3 } from 'three';
-import { CubeSliceX, CubeSliceY, CubeSliceZ } from './app.component';
 import { Move } from './move';
+import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
 export class Cubicle {
   readonly #index: number;
