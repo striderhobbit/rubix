@@ -17,7 +17,7 @@ export class Move {
     this.twist = move.twist.clone().pow(exp);
   }
 
-  order({ vector }: Cubicle): number {
+  twistOrder({ vector }: Cubicle): number {
     return (
       this.twist.orders[
         {
