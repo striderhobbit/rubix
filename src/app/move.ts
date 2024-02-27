@@ -1,21 +1,21 @@
 import { cloneDeep, uniqueId } from 'lodash';
 import { baseMoves } from './baseMoves';
 import { Permutation } from './permutation';
-import { BaseMove, MoveDomain } from './rubik';
+import { BaseMove, Twist } from './rubik';
 
 export class Move {
-  readonly domain: MoveDomain;
   readonly id: string = uniqueId();
   readonly permutation: Permutation;
+  readonly twist: Twist;
 
   get size(): number {
-    return 9 * Object.keys(this.domain.exp).length;
+    return 9 * Object.keys(this.twist.degree).length;
   }
 
   constructor(name: `${BaseMove}`) {
-    const { domain, cycles } = baseMoves[name];
+    const { cycles, twist } = baseMoves[name];
 
-    this.domain = cloneDeep(domain);
     this.permutation = new Permutation(27 * 6).setFromCycles(cycles);
+    this.twist = cloneDeep(twist);
   }
 }

@@ -24,10 +24,10 @@ export type CubeSliceX = 'L' | 'M' | 'R';
 export type CubeSliceY = 'U' | 'E' | 'D';
 export type CubeSliceZ = 'B' | 'S' | 'F';
 
-export type MoveDomain = {
+export type Twist = {
   [S in Slice]: {
     slice: S;
-    exp: {
+    degree: {
       [_ in {
         x: CubeSliceX;
         y: CubeSliceY;

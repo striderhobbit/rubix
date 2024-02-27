@@ -28,13 +28,13 @@ export class Cubicle {
   }
 
   exp(move?: Move): number | undefined {
-    switch (move?.domain.slice) {
+    switch (move?.twist.slice) {
       case 'x':
-        return move.domain.exp[this.slices[0]];
+        return move.twist.degree[this.slices[0]];
       case 'y':
-        return move.domain.exp[this.slices[1]];
+        return move.twist.degree[this.slices[1]];
       case 'z':
-        return move.domain.exp[this.slices[2]];
+        return move.twist.degree[this.slices[2]];
     }
 
     return;
