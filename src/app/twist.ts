@@ -38,7 +38,7 @@ export class Twist<A extends Axis = Axis> {
   }
 
   pow(order: number): Twist<A> {
-    this.#order = mapValues(this.#order, (order) => order && order * order);
+    this.#order = mapValues(this.#order, (x) => x && x * order);
 
     return this;
   }
