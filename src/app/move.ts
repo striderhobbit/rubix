@@ -17,15 +17,13 @@ export class Move {
     this.twist = move.twist.clone().pow(exp);
   }
 
-  twistOrder({ vector }: Cubicle): number {
-    return (
-      this.twist.orders[
-        {
-          x: ['L' as const, 'M' as const, 'R' as const],
-          y: ['U' as const, 'E' as const, 'D' as const],
-          z: ['B' as const, 'S' as const, 'F' as const],
-        }[this.twist.axis][vector[this.twist.axis]]
-      ] ?? 0
-    );
+  twistOrder({ vector }: Cubicle): number | undefined {
+    return this.twist.orders[
+      {
+        x: ['L' as const, 'M' as const, 'R' as const],
+        y: ['U' as const, 'E' as const, 'D' as const],
+        z: ['B' as const, 'S' as const, 'F' as const],
+      }[this.twist.axis][vector[this.twist.axis]]
+    ];
   }
 }

@@ -1,4 +1,4 @@
-import { clone, mapValues } from 'lodash';
+import { clone } from 'lodash';
 import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
 type Axis = 'x' | 'y' | 'z';
@@ -36,7 +36,11 @@ export class Twist<A extends Axis = Axis> {
     let slice: keyof Orders<A>;
 
     for (slice in this.#orders) {
-      this.#orders[slice] = (this.#orders[slice] ?? 0) * exp;
+      const order = this.#orders[slice];
+
+      if (order != null) {
+        this.#orders[slice] = order * exp;
+      }
     }
 
     return this;
