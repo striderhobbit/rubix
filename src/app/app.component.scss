@@ -42,20 +42,20 @@ $cubieSize: calc($cubeSize / 3);
     transform-style: preserve-3d;
     width: 100%;
 
-    :host([rotation-axis]) & {
+    :host([twist-axis]) & {
         animation-duration: 1s;
         animation-timing-function: ease-in-out;
     }
 
-    :host([rotation-axis="x"]) & {
+    :host([twist-axis="x"]) & {
         animation-name: rotateX;
     }
 
-    :host([rotation-axis="y"]) & {
+    :host([twist-axis="y"]) & {
         animation-name: rotateY;
     }
 
-    :host([rotation-axis="z"]) & {
+    :host([twist-axis="z"]) & {
         animation-name: rotateZ;
     }
 }

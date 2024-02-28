@@ -23,8 +23,8 @@ import { Rotation } from './rotation';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  @HostBinding('attr.rotation-axis')
-  get rotationAxis(): string | undefined {
+  @HostBinding('attr.twist-axis')
+  get twistAxis(): string | undefined {
     return this.move?.twist.axis;
   }
 
@@ -75,7 +75,7 @@ export class AppComponent {
     .flatMap((x) =>
       times(3).flatMap((y) => times(3).map((z) => new Vector3(x, y, z)))
     )
-    .map((vector, i) => new Cubicle({ index: 6 * i, vector }));
+    .map((coords, i) => new Cubicle({ coords, index: 6 * i }));
 
   protected move?: Move;
 

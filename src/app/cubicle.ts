@@ -1,20 +1,19 @@
 import { Vector3 } from 'three';
-import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
 export class Cubicle {
+  readonly #coords: Vector3;
   readonly #index: number;
-  readonly #vector: Vector3;
+
+  get coords(): Vector3 {
+    return this.#coords.clone();
+  }
 
   get index(): number {
     return this.#index;
   }
 
-  get vector(): Vector3 {
-    return this.#vector.clone();
-  }
-
-  constructor({ index, vector }: { index: number; vector: Vector3 }) {
+  constructor({ coords, index }: { coords: Vector3; index: number }) {
+    this.#coords = coords.clone();
     this.#index = index;
-    this.#vector = vector.clone();
   }
 }
