@@ -1,6 +1,13 @@
 $cubeSize: 50vmin;
 $cubieSize: calc($cubeSize / 3);
 
+$faces: ("back" #0246ad (rotateY(180deg) translateZ(calc($cubieSize / 2)))),
+    ("down" #ffd500 (rotateX(-90deg) translateZ(calc($cubieSize / 2)))),
+    ("front" #009b48 (translateZ(calc($cubieSize / 2)))),
+    ("left" #ff5800 (rotateY(-90deg) translateZ(calc($cubieSize / 2)))),
+    ("right" #b71234 (rotateY(90deg) translateZ(calc($cubieSize / 2)))),
+    ("up" #ffffff (rotateX(90deg) translateZ(calc($cubieSize / 2)))), (null #000000 null);
+
 @each $axis in X, Y, Z {
     @keyframes rotate#{$axis} {
         0% {
@@ -24,14 +31,6 @@ $cubieSize: calc($cubeSize / 3);
     margin: calc($cubeSize * (sqrt(3) - 1) / 2);
     transform-style: preserve-3d;
     width: $cubeSize;
-
-    --color-0: #0246ad;
-    --color-1: #ffd500;
-    --color-2: #009b48;
-    --color-3: #ff5800;
-    --color-4: #b71234;
-    --color-5: #ffffff;
-    --color-6: #000000;
 }
 
 .cubicle {
@@ -65,35 +64,25 @@ $cubieSize: calc($cubeSize / 3);
     transform: translate3d(calc(var(--tx) * $cubieSize), calc(var(--ty) * $cubieSize), calc((var(--tz)) * $cubieSize))
         translateZ(-$cubieSize);
     width: $cubieSize;
-}
 
-.cubie__face {
-    backface-visibility: hidden;
-    background-color: black;
-    border-radius: calc($cubieSize / 10);
-    position: absolute;
+    &__face {
+        backface-visibility: hidden;
+        background-color: black;
+        border-radius: calc($cubieSize / 10);
+        position: absolute;
 
-    &--0 {
-        transform: rotateY(180deg) translateZ(calc($cubieSize / 2));
+        @each $face in $faces {
+            &--#{calc(index($faces, $face) - 1)} {
+                transform: #{nth($face, 3)};
+            }
+        }
     }
 
-    &--1 {
-        transform: rotateX(-90deg) translateZ(calc($cubieSize / 2));
-    }
-
-    &--2 {
-        transform: translateZ(calc($cubieSize / 2));
-    }
-
-    &--3 {
-        transform: rotateY(-90deg) translateZ(calc($cubieSize / 2));
-    }
-
-    &--4 {
-        transform: rotateY(90deg) translateZ(calc($cubieSize / 2));
-    }
-
-    &--5 {
-        transform: rotateX(90deg) translateZ(calc($cubieSize / 2));
+    &__sticker {
+        @each $face in $faces {
+            &--#{calc(index($faces, $face) - 1)} > rect {
+                fill: #{nth($face, 2)};
+            }
+        }
     }
 }

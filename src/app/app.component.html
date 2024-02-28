@@ -15,14 +15,13 @@
     >
       <svg
         *ngFor="let j of times(6)"
-        class="cubie__face cubie__face--{{ j }}"
+        class="cubie__face cubie__face--{{ j }} cubie__sticker--{{
+          permutation.pull(cubicle.index + j)
+        }}"
         viewBox="0 0 1 1"
       >
         <rect
           *ngIf="0.1 as margin"
-          [attr.fill]="
-            'var(--color-' + permutation.pull(cubicle.index + j) + ')'
-          "
           [attr.height]="1 - 2 * margin"
           [attr.rx]="0.1"
           [attr.ry]="0.1"
