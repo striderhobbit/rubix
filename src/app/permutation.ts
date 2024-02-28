@@ -42,8 +42,8 @@ export class DictPermutation<T> {
     return this.setFromArray(this.inverse().#map);
   }
 
-  map(x: number): number {
-    return this.#map[x];
+  map(x: number): T {
+    return this.#dictionary[this.#map[x]];
   }
 
   pow(exp: number): DictPermutation<T> {
@@ -104,7 +104,7 @@ export class DictPermutation<T> {
       let x: number;
       const cycle = [(x = domain[0])];
 
-      while (cycle[0] !== (x = this.map(x))) {
+      while (cycle[0] !== (x = this.#map[x])) {
         cycle.push(x);
       }
 
