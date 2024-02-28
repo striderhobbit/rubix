@@ -17,9 +17,3 @@ export type BaseMove =
   | 'x'
   | 'y'
   | 'z';
-
-export type CubeSliceX = 'L' | 'M' | 'R';
-export type CubeSliceY = 'U' | 'E' | 'D';
-export type CubeSliceZ = 'B' | 'S' | 'F';
-
-export type CubeSlice = CubeSliceX | CubeSliceY | CubeSliceZ;

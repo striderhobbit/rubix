@@ -1,13 +1,12 @@
 import { clone } from 'lodash';
-import { CubeSliceX, CubeSliceY, CubeSliceZ } from './rubik';
 
 type Axis = 'x' | 'y' | 'z';
 
 type Orders<A extends Axis> = {
   [Slice in {
-    x: CubeSliceX;
-    y: CubeSliceY;
-    z: CubeSliceZ;
+    x: 'L' | 'M' | 'R';
+    y: 'U' | 'E' | 'D';
+    z: 'B' | 'S' | 'F';
   }[A]]?: number;
 };
 
