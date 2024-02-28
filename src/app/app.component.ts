@@ -15,7 +15,7 @@ import { Vector3 } from 'three';
 import { Cubicle } from './cubicle';
 import { Move } from './move';
 import { Permutation, SimplePermutation } from './permutation';
-import { Rotation } from './rotation';
+import { Rotation3 } from './rotation';
 
 @Component({
   selector: 'app-root',
@@ -43,10 +43,7 @@ export class AppComponent {
     if (this.free) {
       const axis = new Vector3(-event.movementY, event.movementX, 0);
 
-      this.rotation.applyAxisAngle({
-        axis,
-        angle: axis.length() / 80,
-      });
+      this.rotation.applyAxisAngle(axis, axis.length() / 80);
     }
   }
 
@@ -55,21 +52,21 @@ export class AppComponent {
     delete this.free;
   }
 
-  private free?: boolean;
+  protected readonly animations: Subject<string> = new Subject();
 
-  private moves: Subject<Move> = new Subject();
-
-  protected animations: Subject<string> = new Subject();
-
-  protected cubicles: Cubicle[] = times(3)
+  protected readonly cubicles: Cubicle[] = times(3)
     .flatMap((x) =>
       times(3).flatMap((y) => times(3).map((z) => new Vector3(x, y, z)))
     )
     .map((coords, i) => new Cubicle({ coords, index: 6 * i }));
 
+  private free?: boolean;
+
   protected move?: Move;
 
-  protected permutation: SimplePermutation = new Permutation([
+  private readonly moves: Subject<Move> = new Subject();
+
+  protected readonly permutation: SimplePermutation = new Permutation([
     0, 6, 6, 3, 6, 5, 6, 6, 6, 3, 6, 5, 6, 6, 2, 3, 6, 5, 0, 6, 6, 3, 6, 6, 6,
     6, 6, 3, 6, 6, 6, 6, 2, 3, 6, 6, 0, 1, 6, 3, 6, 6, 6, 1, 6, 3, 6, 6, 6, 1,
     2, 3, 6, 6, 0, 6, 6, 6, 6, 5, 6, 6, 6, 6, 6, 5, 6, 6, 2, 6, 6, 5, 0, 6, 6,
@@ -79,11 +76,11 @@ export class AppComponent {
     6, 1, 6, 6, 4, 6, 6, 1, 2, 6, 4, 6,
   ]);
 
-  protected rotation: Rotation = new Rotation()
-    .rotateY(-Math.PI / 4)
-    .rotateX(-Math.PI / 4);
+  protected readonly rotation: Rotation3 = new Rotation3()
+    .applyAxisAngle(new Vector3(0, 1, 0), -Math.PI / 4)
+    .applyAxisAngle(new Vector3(1, 0, 0), -Math.PI / 4);
 
-  protected times = times;
+  protected readonly times = times;
 
   constructor() {
     this.moves

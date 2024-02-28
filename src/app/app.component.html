@@ -1,12 +1,4 @@
-<div
-  class="cube"
-  [style]="{
-    '--rotate-x': rotation.axis.x,
-    '--rotate-y': rotation.axis.y,
-    '--rotate-z': rotation.axis.z,
-    '--rotate-a': rotation.angle
-  }"
->
+<div class="cube" [style.transform]="rotation.rotate3d">
   <div
     *ngFor="let cubicle of cubicles"
     class="cubicle"

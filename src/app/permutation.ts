@@ -1,8 +1,8 @@
 import { at, clone, isEqual, pull, sortBy, times } from 'lodash';
 
 export class Permutation<T> {
-  #dictionary: T[];
-  #map: number[];
+  readonly #dictionary: T[];
+  readonly #map: number[];
 
   get n(): number {
     return this.#dictionary.length;
@@ -14,7 +14,7 @@ export class Permutation<T> {
   }
 
   apply(permutation: Permutation<T>): Permutation<T> {
-    this.#map = at(permutation.#map, this.#map);
+    Object.assign(this.#map, at(permutation.#map, this.#map));
 
     return this;
   }
@@ -69,7 +69,7 @@ export class Permutation<T> {
       );
     }
 
-    this.#map = map.slice();
+    Object.assign(this.#map, map);
 
     return this;
   }
