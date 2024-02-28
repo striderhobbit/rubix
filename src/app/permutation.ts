@@ -33,7 +33,7 @@ export class DictPermutation<T> {
     return this.identity().setFromArray(
       this.#map.reduce(
         (map, y, x) => Object.assign(map, { [y]: x }),
-        Array(this.n)
+        Array(this.#n)
       )
     );
   }
@@ -65,9 +65,9 @@ export class DictPermutation<T> {
   }
 
   setFromArray(map: number[]): DictPermutation<T> {
-    if (!isEqual(sortBy(map), times(this.n))) {
+    if (!isEqual(sortBy(map), times(this.#n))) {
       throw new Error(
-        `map ${JSON.stringify(map)} is not an element of S(${this.n})`
+        `map ${JSON.stringify(map)} is not an element of S(${this.#n})`
       );
     }
 
@@ -88,7 +88,7 @@ export class DictPermutation<T> {
                   Object.assign(map, {
                     [x]: cycle[(i + 1) % cycle.length],
                   }),
-                times(this.n)
+                times(this.#n)
               )
             )
           );
@@ -97,7 +97,7 @@ export class DictPermutation<T> {
   }
 
   toDisjointCycles(): string {
-    const domain = times(this.n);
+    const domain = times(this.#n);
     const cycles: number[][] = [];
 
     while (domain.length) {
