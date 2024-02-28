@@ -14,7 +14,7 @@ import {
 import { Vector3 } from 'three';
 import { Cubicle } from './cubicle';
 import { Move } from './move';
-import { DictPermutation, Permutation } from './permutation';
+import { Permutation, SimplePermutation } from './permutation';
 import { Rotation } from './rotation';
 
 @Component({
@@ -69,7 +69,7 @@ export class AppComponent {
 
   protected move?: Move;
 
-  protected permutation: Permutation = new DictPermutation([
+  protected permutation: SimplePermutation = new Permutation([
     0, 6, 6, 3, 6, 5, 6, 6, 6, 3, 6, 5, 6, 6, 2, 3, 6, 5, 0, 6, 6, 3, 6, 6, 6,
     6, 6, 3, 6, 6, 6, 6, 2, 3, 6, 6, 0, 1, 6, 3, 6, 6, 6, 1, 6, 3, 6, 6, 6, 1,
     2, 3, 6, 6, 0, 6, 6, 6, 6, 5, 6, 6, 6, 6, 6, 5, 6, 6, 2, 6, 6, 5, 0, 6, 6,

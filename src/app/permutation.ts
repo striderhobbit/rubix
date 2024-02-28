@@ -1,44 +1,42 @@
 import { at, clone, isEqual, pull, sortBy, times } from 'lodash';
 
-export class DictPermutation<T> {
+export class Permutation<T> {
   #dictionary: T[];
   #map: number[];
-  #n: number;
 
   get n(): number {
-    return this.#n;
+    return this.#dictionary.length;
   }
 
   constructor(dictionary: T[]) {
     this.#dictionary = clone(dictionary);
-    this.#n = this.#dictionary.length;
-    this.#map = times(this.#n);
+    this.#map = times(this.n);
   }
 
-  apply(permutation: DictPermutation<T>): DictPermutation<T> {
+  apply(permutation: Permutation<T>): Permutation<T> {
     this.#map = at(permutation.#map, this.#map);
 
     return this;
   }
 
-  clone(): DictPermutation<T> {
+  clone(): Permutation<T> {
     return this.identity().setFromArray(this.#map);
   }
 
-  identity(): DictPermutation<T> {
-    return new DictPermutation(this.#dictionary);
+  identity(): Permutation<T> {
+    return new Permutation(this.#dictionary);
   }
 
-  inverse(): DictPermutation<T> {
+  inverse(): Permutation<T> {
     return this.identity().setFromArray(
       this.#map.reduce(
         (map, y, x) => Object.assign(map, { [y]: x }),
-        Array(this.#n)
+        Array(this.n)
       )
     );
   }
 
-  invert(): DictPermutation<T> {
+  invert(): Permutation<T> {
     return this.setFromArray(this.inverse().#map);
   }
 
@@ -46,7 +44,7 @@ export class DictPermutation<T> {
     return this.#dictionary[this.#map[x]];
   }
 
-  pow(exp: number): DictPermutation<T> {
+  pow(exp: number): Permutation<T> {
     const permutation = this.clone();
 
     for (let k = 1; k < Math.abs(exp); k++) {
@@ -64,10 +62,10 @@ export class DictPermutation<T> {
     return this.#dictionary[this.#map.indexOf(y)];
   }
 
-  setFromArray(map: number[]): DictPermutation<T> {
-    if (!isEqual(sortBy(map), times(this.#n))) {
+  setFromArray(map: number[]): Permutation<T> {
+    if (!isEqual(sortBy(map), times(this.n))) {
       throw new Error(
-        `map ${JSON.stringify(map)} is not an element of S(${this.#n})`
+        `map ${JSON.stringify(map)} is not an element of S(${this.n})`
       );
     }
 
@@ -76,7 +74,7 @@ export class DictPermutation<T> {
     return this;
   }
 
-  setFromCycles(cycles: string): DictPermutation<T> {
+  setFromCycles(cycles: string): Permutation<T> {
     return this.setFromArray(
       Array.from(cycles.matchAll(/\((\d+(\s+\d+)*)\)/g))
         .map(([_, cycle]) => cycle.split(/\s+/).map(Number))
@@ -88,7 +86,7 @@ export class DictPermutation<T> {
                   Object.assign(map, {
                     [x]: cycle[(i + 1) % cycle.length],
                   }),
-                times(this.#n)
+                times(this.n)
               )
             )
           );
@@ -97,7 +95,7 @@ export class DictPermutation<T> {
   }
 
   toDisjointCycles(): string {
-    const domain = times(this.#n);
+    const domain = times(this.n);
     const cycles: number[][] = [];
 
     while (domain.length) {
@@ -119,7 +117,7 @@ export class DictPermutation<T> {
   }
 }
 
-export class Permutation extends DictPermutation<number> {
+export class SimplePermutation extends Permutation<number> {
   constructor(n: number) {
     super(times(n));
   }

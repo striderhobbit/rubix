@@ -1,13 +1,12 @@
 import { uniqueId } from 'lodash';
-import { baseMoves } from './baseMoves';
+import { BaseMove, baseMoves } from './baseMoves';
 import { Cubicle } from './cubicle';
-import { Permutation } from './permutation';
-import { BaseMove } from './rubik';
+import { SimplePermutation } from './permutation';
 import { Twist } from './twist';
 
 export class Move {
   readonly id: string = uniqueId();
-  readonly permutation: Permutation;
+  readonly permutation: SimplePermutation;
   readonly twist: Twist;
 
   constructor({ key, exp = 1 }: { key: BaseMove; exp?: number }) {
