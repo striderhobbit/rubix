@@ -72,7 +72,7 @@ $faces: ("back" #0246ad (rotateY(180deg) translateZ(calc($cubieSize / 2)))),
         position: absolute;
 
         @each $face in $faces {
-            &--#{calc(index($faces, $face) - 1)} {
+            &--#{index($faces, $face)} {
                 transform: #{nth($face, 3)};
             }
         }
@@ -80,7 +80,7 @@ $faces: ("back" #0246ad (rotateY(180deg) translateZ(calc($cubieSize / 2)))),
 
     &__sticker {
         @each $face in $faces {
-            &--#{calc(index($faces, $face) - 1)} > rect {
+            &--#{index($faces, $face)} > rect {
                 fill: #{nth($face, 2)};
             }
         }

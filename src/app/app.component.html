@@ -15,7 +15,7 @@
     >
       <svg
         *ngFor="let j of times(6)"
-        class="cubie__face cubie__face--{{ j }} cubie__sticker--{{
+        class="cubie__face cubie__face--{{ j + 1 }} cubie__sticker--{{
           permutation.pull(cubicle.index + j)
         }}"
         viewBox="0 0 1 1"
