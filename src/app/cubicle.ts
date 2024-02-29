@@ -5,8 +5,12 @@ export class Cubicle {
   readonly #coords: Vector3;
   readonly #index: number;
 
-  get coords(): Vector3 {
-    return this.#coords.clone();
+  get coords(): Record<'--tx' | '--ty' | '--tz', number> {
+    return {
+      '--tx': this.#coords.x,
+      '--ty': this.#coords.y,
+      '--tz': this.#coords.z,
+    };
   }
 
   get index(): number {

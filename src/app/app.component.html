@@ -5,14 +5,7 @@
     [style.--twist-order]="move?.twistOrder(cubicle)"
     (animationend)="animations.next(move!.id)"
   >
-    <div
-      class="cubie"
-      [style]="{
-        '--tx': cubicle.coords.x,
-        '--ty': cubicle.coords.y,
-        '--tz': cubicle.coords.z
-      }"
-    >
+    <div class="cubie" [style]="cubicle.coords">
       <svg
         *ngFor="let j of times(6)"
         class="cubie__face cubie__face--{{ SLICES[j] }}"
