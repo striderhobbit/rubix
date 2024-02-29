@@ -1,4 +1,4 @@
-![Animation](https://github.com/striderhobbit/rubix/assets/141032232/c2a27b6d-b9d8-456f-a3c3-0d8764144565)
+[Preview](https://striderhobbit.github.io/rubix/public)
 
 
 # Rubix
