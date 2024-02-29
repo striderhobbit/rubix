@@ -14,8 +14,9 @@ import {
 import { Vector3 } from 'three';
 import { Cubicle } from './cubicle';
 import { Move } from './move';
-import { Permutation, SimplePermutation } from './permutation';
+import { Permutation } from './permutation';
 import { Rotation3 } from './rotation';
+import { SLICES, Slice } from './twist';
 
 @Component({
   selector: 'app-root',
@@ -66,19 +67,18 @@ export class AppComponent {
 
   private readonly moves: Subject<Move> = new Subject();
 
-  protected readonly permutation: SimplePermutation = new Permutation([
-    1, 7, 7, 4, 7, 6, 7, 7, 7, 4, 7, 6, 7, 7, 3, 4, 7, 6, 1, 7, 7, 4, 7, 7, 7,
-    7, 7, 4, 7, 7, 7, 7, 3, 4, 7, 7, 1, 2, 7, 4, 7, 7, 7, 2, 7, 4, 7, 7, 7, 2,
-    3, 4, 7, 7, 1, 7, 7, 7, 7, 6, 7, 7, 7, 7, 7, 6, 7, 7, 3, 7, 7, 6, 1, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 1, 2, 7, 7, 7, 7, 7, 2, 7, 7,
-    7, 7, 7, 2, 3, 7, 7, 7, 1, 7, 7, 7, 5, 6, 7, 7, 7, 7, 5, 6, 7, 7, 3, 7, 5,
-    6, 1, 7, 7, 7, 5, 7, 7, 7, 7, 7, 5, 7, 7, 7, 3, 7, 5, 7, 1, 2, 7, 7, 5, 7,
-    7, 2, 7, 7, 5, 7, 7, 2, 3, 7, 5, 7,
-  ]);
+  protected readonly permutation: Permutation<Slice | undefined> =
+    new Permutation(
+      Object.values(this.cubicles).flatMap((cubicle) =>
+        SLICES.map((SLICE) => cubicle.slices.find((slice) => slice === SLICE))
+      )
+    );
 
   protected readonly rotation: Rotation3 = new Rotation3()
     .applyAxisAngle(new Vector3(0, 1, 0), -Math.PI / 4)
     .applyAxisAngle(new Vector3(1, 0, 0), -Math.PI / 4);
+
+  protected readonly SLICES = SLICES;
 
   protected readonly times = times;
 

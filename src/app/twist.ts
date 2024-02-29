@@ -1,14 +1,18 @@
 import { clone } from 'lodash';
 
-type Axis = 'x' | 'y' | 'z';
+export type Axis = 'x' | 'y' | 'z';
 
-type Orders<A extends Axis> = {
+export type Orders<A extends Axis> = {
   [Slice in {
     x: 'L' | 'M' | 'R';
     y: 'U' | 'E' | 'D';
     z: 'B' | 'S' | 'F';
   }[A]]?: number;
 };
+
+export type Slice = keyof Orders<Axis>;
+
+export const SLICES = ['B', 'D', 'F', 'L', 'R', 'U'];
 
 export class Twist<A extends Axis = Axis> {
   readonly #axis: A;

@@ -1,12 +1,41 @@
 $cubeSize: 50vmin;
 $cubieSize: calc($cubeSize / 3);
 
-$faces: ("back" #0246ad (rotateY(180deg) translateZ(calc($cubieSize / 2)))),
-    ("down" #ffd500 (rotateX(-90deg) translateZ(calc($cubieSize / 2)))),
-    ("front" #009b48 (translateZ(calc($cubieSize / 2)))),
-    ("left" #ff5800 (rotateY(-90deg) translateZ(calc($cubieSize / 2)))),
-    ("right" #b71234 (rotateY(90deg) translateZ(calc($cubieSize / 2)))),
-    ("up" #ffffff (rotateX(90deg) translateZ(calc($cubieSize / 2)))), (null #000000 null);
+$faces: (
+        key: "B",
+        color: #0246ad,
+        transform: rotateY(180deg) translateZ(calc($cubieSize / 2))
+    ),
+    (
+        key: "D",
+        color: #ffd500,
+        transform: rotateX(-90deg) translateZ(calc($cubieSize / 2))
+    ),
+    (
+        key: "F",
+        color: #009b48,
+        transform: translateZ(calc($cubieSize / 2))
+    ),
+    (
+        key: "L",
+        color: #ff5800,
+        transform: rotateY(-90deg) translateZ(calc($cubieSize / 2))
+    ),
+    (
+        key: "R",
+        color: #b71234,
+        transform: rotateY(90deg) translateZ(calc($cubieSize / 2))
+    ),
+    (
+        key: "U",
+        color: #ffffff,
+        transform: rotateX(90deg) translateZ(calc($cubieSize / 2))
+    ),
+    (
+        key: null,
+        color: #000000,
+        transform: null
+    );
 
 @each $axis in X, Y, Z {
     @keyframes rotate#{$axis} {
@@ -72,16 +101,16 @@ $faces: ("back" #0246ad (rotateY(180deg) translateZ(calc($cubieSize / 2)))),
         position: absolute;
 
         @each $face in $faces {
-            &--#{index($faces, $face)} {
-                transform: #{nth($face, 3)};
+            &--#{map-get($face, key)} {
+                transform: map-get($face, transform);
             }
         }
     }
 
     &__sticker {
         @each $face in $faces {
-            &--#{index($faces, $face)} > rect {
-                fill: #{nth($face, 2)};
+            &--#{map-get($face, key)} > rect {
+                fill: map-get($face, color);
             }
         }
     }

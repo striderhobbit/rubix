@@ -13,7 +13,7 @@ export class Permutation<T> {
     this.#map = times(this.n);
   }
 
-  apply(permutation: Permutation<T>): Permutation<T> {
+  apply<U>(permutation: Permutation<U>): Permutation<T> {
     Object.assign(this.#map, at(permutation.#map, this.#map));
 
     return this;
