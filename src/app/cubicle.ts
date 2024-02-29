@@ -5,14 +5,6 @@ export class Cubicle {
   readonly #coords: Vector3;
   readonly #index: number;
 
-  get coords(): Record<'--tx' | '--ty' | '--tz', number> {
-    return {
-      '--tx': this.#coords.x,
-      '--ty': this.#coords.y,
-      '--tz': this.#coords.z,
-    };
-  }
-
   get index(): number {
     return this.#index;
   }
@@ -21,6 +13,14 @@ export class Cubicle {
     return ['x' as const, 'y' as const, 'z' as const].map((axis) =>
       this.pick(axis)
     );
+  }
+
+  get transform(): Record<'--tx' | '--ty' | '--tz', number> {
+    return {
+      '--tx': this.#coords.x,
+      '--ty': this.#coords.y,
+      '--tz': this.#coords.z,
+    };
   }
 
   constructor({ coords, index }: { coords: Vector3; index: number }) {
