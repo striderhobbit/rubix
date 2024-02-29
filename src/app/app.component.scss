@@ -30,11 +30,6 @@ $faces: (
         key: "U",
         color: #ffffff,
         transform: rotateX(90deg) translateZ(calc($cubieSize / 2))
-    ),
-    (
-        key: null,
-        color: #000000,
-        transform: null
     );
 
 @each $axis in X, Y, Z {
@@ -105,11 +100,9 @@ $faces: (
                 transform: map-get($face, transform);
             }
         }
-    }
 
-    &__sticker {
         @each $face in $faces {
-            &--#{map-get($face, key)} > rect {
+            &[sticker="#{map-get($face, key)}"] > rect {
                 fill: map-get($face, color);
             }
         }
