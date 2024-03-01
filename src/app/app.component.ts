@@ -1,4 +1,4 @@
-import { Component, HostBinding, HostListener } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { times } from 'lodash';
 import {
   Subject,
@@ -15,7 +15,7 @@ import { Vector3 } from 'three';
 import { Cubicle } from './cubicle';
 import { Move } from './move';
 import { Permutation } from './permutation';
-import { Rotation3 } from './rotation';
+import { RotatableComponent } from './rotatable';
 import { SLICES, Slice } from './twist';
 
 @Component({
@@ -23,59 +23,10 @@ import { SLICES, Slice } from './twist';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent extends RotatableComponent {
   @HostBinding('attr.twist-axis')
   get twistAxis(): string | undefined {
     return this.move?.twist.axis;
-  }
-
-  @HostListener('mousedown', ['$event'])
-  @HostListener('touchstart', ['$event'])
-  onMouseDownOrTouchStart(event: MouseEvent | TouchEvent): void {
-    this.free = true;
-  }
-
-  @HostListener('mouseleave', ['$event'])
-  onMouseLeave(event: MouseEvent): void {
-    delete this.free;
-  }
-
-  @HostListener('touchcancel', ['$event'])
-  onTouchcancel(event: TouchEvent): void {
-    delete this.free;
-
-    delete this.previousTouch;
-  }
-
-  @HostListener('mousemove', ['$event'])
-  onMouseMove(event: MouseEvent): void {
-    this.rotate(event.movementX, event.movementY);
-  }
-
-  @HostListener('touchmove', ['$event'])
-  onTouchMove(event: TouchEvent): void {
-    const touch = event.touches[0];
-
-    if (this.previousTouch != null) {
-      this.rotate(
-        touch.screenX - this.previousTouch.screenX,
-        touch.screenY - this.previousTouch.screenY
-      );
-    }
-
-    this.previousTouch = touch;
-  }
-
-  @HostListener('mouseup', ['$event'])
-  onMouseUp(event: MouseEvent): void {
-    delete this.free;
-  }
-
-  @HostListener('touchend', ['$event'])
-  onTouchEnd(event: TouchEvent): void {
-    delete this.free;
-
-    delete this.previousTouch;
   }
 
   protected readonly animations: Subject<string> = new Subject();
@@ -85,8 +36,6 @@ export class AppComponent {
       times(3).flatMap((y) => times(3).map((z) => new Vector3(x, y, z)))
     )
     .map((coords, i) => new Cubicle({ coords, index: 6 * i }));
-
-  private free?: boolean;
 
   protected move?: Move;
 
@@ -99,17 +48,13 @@ export class AppComponent {
       )
     );
 
-  private previousTouch?: Touch;
-
-  protected readonly rotation: Rotation3 = new Rotation3()
-    .applyAxisAngle(new Vector3(0, 1, 0), -Math.PI / 4)
-    .applyAxisAngle(new Vector3(1, 0, 0), -Math.PI / 4);
-
   protected readonly SLICES = SLICES;
 
   protected readonly times = times;
 
   constructor() {
+    super();
+
     this.moves
       .pipe(
         concatMap((move) => {
@@ -133,13 +78,5 @@ export class AppComponent {
     this.moves.next(new Move({ key: 'R', exp: -2 }));
     this.moves.next(new Move({ key: 'l', exp: 1 }));
     this.moves.next(new Move({ key: 'u', exp: 1 }));
-  }
-
-  private rotate(movementX: number, movementY: number): void {
-    if (this.free) {
-      const axis = new Vector3(-movementY, movementX, 0);
-
-      this.rotation.applyAxisAngle(axis, axis.length() / 80);
-    }
   }
 }
