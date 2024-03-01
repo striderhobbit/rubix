@@ -1,12 +1,18 @@
-import { HostListener, Injectable } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Vector3 } from 'three';
 import { Rotation3 } from './rotation';
 
-@Injectable()
+@Component({
+    template: ''
+})
 export class RotatableComponent {
   @HostListener('mousedown', ['$event'])
+  onMouseDown(event: MouseEvent): void {
+    this.free = true;
+  }
+
   @HostListener('touchstart', ['$event'])
-  onMouseDownOrTouchStart(event: MouseEvent | TouchEvent): void {
+  onTouchStart(event: TouchEvent): void {
     this.free = true;
   }
 
