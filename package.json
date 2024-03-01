@@ -4,8 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-path docs --base-href /rubix/",
-    "watch": "ng build --watch --configuration development",
+    "build": "ng build --watch --output-path docs --base-href /rubix/",
     "test": "ng test"
   },
   "private": true,
