@@ -30,26 +30,39 @@ export class AppComponent {
   }
 
   @HostListener('mousedown', ['$event'])
-  onMouseDown(event: MouseEvent): void {
+  @HostListener('touchstart', ['$event'])
+  onMouseDown(event: Event): void {
     this.free = true;
   }
 
   @HostListener('mouseleave', ['$event'])
-  onMouseLeave(event: MouseEvent): void {
+  @HostListener('touchcancel', ['$event'])
+  onMouseLeave(event: Event): void {
     delete this.free;
   }
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    if (this.free) {
-      const axis = new Vector3(-event.movementY, event.movementX, 0);
+    this.rotate(event.movementX, event.movementY);
+  }
 
-      this.rotation.applyAxisAngle(axis, axis.length() / 80);
+  @HostListener('touchmove', ['$event'])
+  onTouchMove(event: TouchEvent): void {
+    const touch = event.touches[0];
+
+    if (this.previousTouch != null) {
+      this.rotate(
+        touch.screenX - this.previousTouch.screenX,
+        touch.screenY - this.previousTouch.screenY
+      );
     }
+
+    this.previousTouch = touch;
   }
 
   @HostListener('mouseup', ['$event'])
-  onMouseUp(event: MouseEvent): void {
+  @HostListener('touchend', ['$event'])
+  onMouseUp(event: Event): void {
     delete this.free;
   }
 
@@ -73,6 +86,8 @@ export class AppComponent {
         SLICES.map((SLICE) => cubicle.slices.find((slice) => slice === SLICE))
       )
     );
+
+  private previousTouch?: Touch;
 
   protected readonly rotation: Rotation3 = new Rotation3()
     .applyAxisAngle(new Vector3(0, 1, 0), -Math.PI / 4)
@@ -106,5 +121,13 @@ export class AppComponent {
     this.moves.next(new Move({ key: 'R', exp: -2 }));
     this.moves.next(new Move({ key: 'l', exp: 1 }));
     this.moves.next(new Move({ key: 'u', exp: 1 }));
+  }
+
+  private rotate(movementX: number, movementY: number): void {
+    if (this.free) {
+      const axis = new Vector3(-movementY, movementX, 0);
+
+      this.rotation.applyAxisAngle(axis, axis.length() / 80);
+    }
   }
 }
