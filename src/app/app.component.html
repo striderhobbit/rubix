@@ -1,6 +1,6 @@
 <div class="cube" [style.transform]="rotation.rotate3d">
   <div
-    *ngFor="let cubicle of cubicles"
+    *ngFor="let cubicle of cube.cubicles"
     class="cubicle"
     [style.--twist-order]="move?.twistOrder(cubicle)"
     (animationend)="animations.next(move!.id)"
@@ -8,8 +8,8 @@
     <div class="cubie" [style]="cubicle.transform">
       <svg
         *ngFor="let j of times(6)"
-        class="cubie__face cubie__face--{{ SLICES[j] }}"
-        [attr.sticker]="permutation.pull(cubicle.index + j)"
+        class="cubie__face cubie__face--{{ cube.slices[j] }}"
+        [attr.sticker]="cube.permutation.pull(cubicle.index + j)"
         viewBox="0 0 1 1"
       >
         <rect

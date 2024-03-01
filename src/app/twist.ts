@@ -12,8 +12,6 @@ export type Orders<A extends Axis> = {
 
 export type Slice = keyof Orders<Axis>;
 
-export const SLICES: Slice[] = ['B', 'D', 'F', 'L', 'R', 'U'];
-
 export class Twist<A extends Axis = Axis> {
   readonly #axis: A;
   readonly #orders: Orders<A>;
