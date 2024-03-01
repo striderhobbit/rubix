@@ -39,6 +39,7 @@ export class AppComponent {
   @HostListener('touchcancel', ['$event'])
   onMouseLeave(event: Event): void {
     delete this.free;
+    delete this.previousTouch;
   }
 
   @HostListener('mousemove', ['$event'])
@@ -64,6 +65,7 @@ export class AppComponent {
   @HostListener('touchend', ['$event'])
   onMouseUp(event: Event): void {
     delete this.free;
+    delete this.previousTouch;
   }
 
   protected readonly animations: Subject<string> = new Subject();
