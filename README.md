@@ -1,4 +1,4 @@
-[Preview](https://striderhobbit.github.io/rubix/public)
+[Preview](https://striderhobbit.github.io/rubix)
 
 
 # Rubix
