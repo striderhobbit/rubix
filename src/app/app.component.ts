@@ -31,13 +31,13 @@ export class AppComponent {
 
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
-  onMouseDown(event: Event): void {
+  onMouseDownOrTouchStart(event: Event): void {
     this.free = true;
   }
 
   @HostListener('mouseleave', ['$event'])
   @HostListener('touchcancel', ['$event'])
-  onMouseLeave(event: Event): void {
+  onMouseLeaveOrTouchCancel(event: Event): void {
     delete this.free;
     delete this.previousTouch;
   }
@@ -63,7 +63,7 @@ export class AppComponent {
 
   @HostListener('mouseup', ['$event'])
   @HostListener('touchend', ['$event'])
-  onMouseUp(event: Event): void {
+  onMouseUpOrTouchEnd(event: Event): void {
     delete this.free;
     delete this.previousTouch;
   }
