@@ -11,11 +11,11 @@ export class Cube {
     )
     .map((coords, i) => new Cubicle({ coords, index: 6 * i }));
 
+  readonly slices: Slice[] = ['B', 'D', 'F', 'L', 'R', 'U'];
+
   readonly permutation: Permutation<Slice | undefined> = new Permutation(
     Object.values(this.cubicles).flatMap((cubicle) =>
       this.slices.map((slice) => cubicle.slices.find((s) => s === slice))
     )
   );
-
-  readonly slices: Slice[] = ['B', 'D', 'F', 'L', 'R', 'U'];
 }
