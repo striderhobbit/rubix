@@ -13,14 +13,14 @@ import {
 } from 'rxjs';
 import { Cube } from './cube';
 import { Move } from './move';
-import { RotatableComponent } from './rotatable';
+import { TouchRotatableComponent } from './touchRotatable';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent extends RotatableComponent {
+export class AppComponent extends TouchRotatableComponent {
   @HostBinding('attr.twist-axis')
   get twistAxis(): string | undefined {
     return this.move?.twist.axis;
